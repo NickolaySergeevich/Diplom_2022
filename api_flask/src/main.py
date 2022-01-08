@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, jsonify, Response, request
 
-from work_with_db.db_helper import DBHelper
+from src.work_with_db.db_helper import DBHelper
 
 # WSGI
 application = Flask(__name__)
