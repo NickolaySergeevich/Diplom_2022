@@ -34,6 +34,27 @@ class DBHelper:
         self._cursor.close()
         self._connection.close()
 
+    def add_user(self, username: str, password: str) -> bool:
+        """
+        Добавление пользователя в бд
+
+        :param username: Имя пользователя.
+        :param password: Пароль пользователя.
+
+        :return: Успешно ли
+        """
+
+        try:
+            self._cursor.execute(
+                f"insert into {DBHelper._users_table} (username, password) "
+                f"values ('{username}', '{hashlib.md5(password.encode()).hexdigest()}')"
+            )
+            self._connection.commit()
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        return True
+
     def check_user(self, username: str, password: str) -> bool:
         """
         Проверяет, есть ли пользователь в бд
@@ -79,7 +100,8 @@ def main() -> None:
     """
 
     print(DBHelper.read_settings_file())
-    print(DBHelper(**DBHelper.read_settings_file()).check_user("admin3", "23514317"))
+    print(DBHelper(**DBHelper.read_settings_file()).check_user("adminTwo", "06071976"))
+    print(DBHelper(**DBHelper.read_settings_file()).add_user("adminTwo", "06071976"))
 
 
 if __name__ == '__main__':
