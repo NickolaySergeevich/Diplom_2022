@@ -10,7 +10,7 @@ wsgi_app = application.wsgi_app
 db_helper = DBHelper(**DBHelper.read_settings_file())
 
 
-@application.route("/api/")
+@application.route("/")
 def start_api_page() -> str:
     """
     Стартовая страница
