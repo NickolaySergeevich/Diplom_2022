@@ -1,3 +1,5 @@
+import hashlib
+
 import mysql.connector
 
 
@@ -5,6 +7,9 @@ class DBHelper:
     """
     Класс для работы с удалённой бд (MySQL)
     """
+
+    # Настройки (лучше бы ваша бд была такой)
+    _users_table = "users"
 
     def __init__(self, user: str, password: str, host: str, database_name: str):
         """
@@ -29,8 +34,25 @@ class DBHelper:
         self._cursor.close()
         self._connection.close()
 
+    def check_user(self, username: str, password: str) -> bool:
+        """
+        Проверяет, есть ли пользователь в бд
+
+        :param username: Имя пользователя.
+        :param password: Пароль пользователя.
+
+        :return: Есть в базе или нет
+        """
+
+        self._cursor.execute(
+            f"select * from {DBHelper._users_table} "
+            f"where username='{username}' and password='{hashlib.md5(password.encode()).hexdigest()}'"
+        )
+
+        return len(self._cursor.fetchall()) == 1
+
     @staticmethod
-    def read_settings_file(filename: str = "../help_files/database_settings.dk") -> dict:
+    def read_settings_file(filename: str = "../../help_files/database_settings.dk") -> dict:
         """
         Просто читает файл с настройками
 
@@ -57,7 +79,7 @@ def main() -> None:
     """
 
     print(DBHelper.read_settings_file())
-    DBHelper(**DBHelper.read_settings_file())
+    print(DBHelper(**DBHelper.read_settings_file()).check_user("admin3", "23514317"))
 
 
 if __name__ == '__main__':
