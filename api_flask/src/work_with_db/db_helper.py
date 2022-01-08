@@ -34,6 +34,27 @@ class DBHelper:
         self._cursor.close()
         self._connection.close()
 
+    def get_users(self) -> list:
+        """
+        Возвращает список всех пользователей
+
+        :return: Список с пользователями
+        """
+
+        self._cursor.execute(
+            f"select * from {DBHelper._users_table}"
+        )
+
+        answer_list = list()
+        for elem in self._cursor.fetchall():
+            answer_list.append({
+                "id": elem[0],
+                "username": elem[1],
+                "password (md5)": elem[2]
+            })
+
+        return answer_list
+
     def add_user(self, username: str, password: str) -> bool:
         """
         Добавление пользователя в бд
@@ -73,7 +94,7 @@ class DBHelper:
         return len(self._cursor.fetchall()) == 1
 
     @staticmethod
-    def read_settings_file(filename: str = "../../help_files/database_settings.dk") -> dict:
+    def read_settings_file(filename: str = "../help_files/database_settings.dk") -> dict:
         """
         Просто читает файл с настройками
 
@@ -99,9 +120,10 @@ def main() -> None:
     :return: Ничего
     """
 
-    print(DBHelper.read_settings_file())
-    print(DBHelper(**DBHelper.read_settings_file()).check_user("adminTwo", "06071976"))
-    print(DBHelper(**DBHelper.read_settings_file()).add_user("adminTwo", "06071976"))
+    # print(DBHelper.read_settings_file())
+    # print(DBHelper(**DBHelper.read_settings_file()).check_user("adminTwo", "06071976"))
+    # print(DBHelper(**DBHelper.read_settings_file()).add_user("NickolaySergeevich", "06071976"))
+    # DBHelper(**DBHelper.read_settings_file()).get_users()
 
 
 if __name__ == '__main__':
