@@ -101,7 +101,7 @@ class DBHelper:
         return len(self._cursor.fetchall()) == 1
 
     @staticmethod
-    def read_settings_file(filename: str = "../help_files/database_settings.dk") -> dict:
+    def read_settings_file(filename: str = "help_files/database_settings.dk") -> dict:
         """
         Просто читает файл с настройками
 
