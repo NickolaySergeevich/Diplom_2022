@@ -76,20 +76,27 @@ class DBHelper:
 
         return True
 
-    def check_user(self, username: str, password: str) -> bool:
+    def check_user(self, username: str, password: str, is_md5: bool = True) -> bool:
         """
         Проверяет, есть ли пользователь в бд
 
         :param username: Имя пользователя.
         :param password: Пароль пользователя.
+        :param is_md5: Захеширован ли пароль по md5
 
         :return: Есть в базе или нет
         """
 
-        self._cursor.execute(
-            f"select * from {DBHelper._users_table} "
-            f"where username='{username}' and password='{hashlib.md5(password.encode()).hexdigest()}'"
-        )
+        if is_md5:
+            self._cursor.execute(
+                f"select * from {DBHelper._users_table} "
+                f"where username='{username}' and password='{password}'"
+            )
+        else:
+            self._cursor.execute(
+                f"select * from {DBHelper._users_table} "
+                f"where username='{username}' and password='{hashlib.md5(password.encode()).hexdigest()}'"
+            )
 
         return len(self._cursor.fetchall()) == 1
 
