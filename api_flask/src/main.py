@@ -59,6 +59,28 @@ def login() -> Response:
         return jsonify({"status": "404"})
 
 
+@application.route("/api/registration/", methods=["POST"])
+def registration() -> Response:
+    """
+    Регистрация нового пользователя
+
+    :return: Ответ Json
+    """
+
+    request_data = request.get_json()
+    if request_data is None:
+        return jsonify({"status": False})
+    if not all(key in request_data for key in ("username", "password", "name", "surname")):
+        return jsonify({"status": "))"})
+
+    username = request_data["username"]
+    password = request_data["password"]
+    name = request_data["name"]
+    surname = request_data["surname"]
+
+    return jsonify({"status": db_helper.registration(username, password, name, surname, False)})
+
+
 def main() -> None:
     """
     Для прямого запуска
