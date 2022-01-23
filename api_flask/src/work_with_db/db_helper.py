@@ -109,7 +109,7 @@ class DBHelper:
         return True
 
     @staticmethod
-    def read_settings_file(filename: str = "help_files/database_settings.dk") -> dict:
+    def read_settings_file(filename: str) -> dict:
         """
         Просто читает файл с настройками
 
