@@ -51,7 +51,7 @@ class DBHelper:
 
         return answer_list
 
-    def login_in(self, username: str, password: str, is_mdfive: bool = False) -> list | None:
+    def login_in(self, username: str, password: str, is_mdfive: bool = False) -> dict | None:
         """
         Вход пользователя
 
@@ -59,7 +59,7 @@ class DBHelper:
         :param password: Пароль пользователя
         :param is_mdfive: Хеширован ли пароль
 
-        :return: Список с информацией или None
+        :return: Словарь с информацией или None
         """
 
         if not is_mdfive:
@@ -73,7 +73,12 @@ class DBHelper:
             self._cursor.execute(
                 f"select * from users_info where user_id = '{answer_from_db[0][0]}'"
             )
-            return self._cursor.fetchall()
+            answer_from_db = self._cursor.fetchall()[0]
+
+            return {
+                "name": answer_from_db[2],
+                "surname": answer_from_db[3]
+            }
         else:
             return None
 
