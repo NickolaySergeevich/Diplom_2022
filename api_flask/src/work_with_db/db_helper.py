@@ -8,9 +8,6 @@ class DBHelper:
     Класс для работы с удалённой бд (MySQL)
     """
 
-    # Настройки (лучше бы ваша бд была такой)
-    _users_table = "users"
-
     def __init__(self, user: str, password: str, host: str, database_name: str):
         """
         Конструктор стандартный для создания подключения и получения курсора
@@ -31,7 +28,6 @@ class DBHelper:
         :return: Ничего
         """
 
-        self._cursor.close()
         self._connection.close()
 
     def get_users(self) -> list:
@@ -42,7 +38,7 @@ class DBHelper:
         """
 
         self._cursor.execute(
-            f"select * from {DBHelper._users_table}"
+            f"select * from users"
         )
 
         answer_list = list()
@@ -55,20 +51,56 @@ class DBHelper:
 
         return answer_list
 
-    def add_user(self, username: str, password: str) -> bool:
+    def login_in(self, username: str, password: str, is_mdfive: bool = False) -> list | None:
         """
-        Добавление пользователя в бд
+        Вход пользователя
 
-        :param username: Имя пользователя.
-        :param password: Пароль пользователя.
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param is_mdfive: Хеширован ли пароль
+
+        :return: Список с информацией или None
+        """
+
+        if not is_mdfive:
+            password = hashlib.md5(password.encode("utf-8")).hexdigest()
+
+        self._cursor.execute(
+            f"select * from users where username = '{username}' and password = '{password}'"
+        )
+        answer_from_db = self._cursor.fetchall()
+        if len(answer_from_db) != 0:
+            self._cursor.execute(
+                f"select * from users_info where user_id = '{answer_from_db[0][0]}'"
+            )
+            return self._cursor.fetchall()
+        else:
+            return None
+
+    def registration(self, username: str, password: str, name: str, surname: str, is_mdfive: bool = False) -> bool:
+        """
+        Регистрация пользователя
+
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param is_mdfive: Хеширован ли пароль
 
         :return: Успешно ли
         """
 
+        if not is_mdfive:
+            password = hashlib.md5(password.encode("utf-8")).hexdigest()
+
         try:
             self._cursor.execute(
-                f"insert into {DBHelper._users_table} (username, password) "
-                f"values ('{username}', '{hashlib.md5(password.encode()).hexdigest()}')"
+                f"insert into users (username, password) values ('{username}', '{password}')"
+            )
+            id_new_user = self._cursor.lastrowid
+            self._cursor.execute(
+                f"insert into users_info (user_id, name, surname)"
+                f"values ({id_new_user}, '{name}', '{surname}')"
             )
             self._connection.commit()
         except mysql.connector.errors.IntegrityError:
@@ -76,32 +108,8 @@ class DBHelper:
 
         return True
 
-    def check_user(self, username: str, password: str, is_md5: bool = True) -> bool:
-        """
-        Проверяет, есть ли пользователь в бд
-
-        :param username: Имя пользователя.
-        :param password: Пароль пользователя.
-        :param is_md5: Захеширован ли пароль по md5
-
-        :return: Есть в базе или нет
-        """
-
-        if is_md5:
-            self._cursor.execute(
-                f"select * from {DBHelper._users_table} "
-                f"where username='{username}' and password='{password}'"
-            )
-        else:
-            self._cursor.execute(
-                f"select * from {DBHelper._users_table} "
-                f"where username='{username}' and password='{hashlib.md5(password.encode()).hexdigest()}'"
-            )
-
-        return len(self._cursor.fetchall()) == 1
-
     @staticmethod
-    def read_settings_file(filename: str = "../help_files/database_settings.dk") -> dict:
+    def read_settings_file(filename: str = "help_files/database_settings.dk") -> dict:
         """
         Просто читает файл с настройками
 
@@ -127,10 +135,7 @@ def main() -> None:
     :return: Ничего
     """
 
-    # print(DBHelper.read_settings_file())
-    # print(DBHelper(**DBHelper.read_settings_file()).check_user("adminTwo", "06071976"))
-    # print(DBHelper(**DBHelper.read_settings_file()).add_user("NickolaySergeevich", "06071976"))
-    # DBHelper(**DBHelper.read_settings_file()).get_users()
+    pass
 
 
 if __name__ == '__main__':
