@@ -52,6 +52,12 @@ def login() -> Response:
     username = request.args.get("username")
     password = request.args.get("password")
 
+    answer_from_db = db_helper.login_in(username, password, True)
+    if answer_from_db is not None:
+        return jsonify(answer_from_db)
+    else:
+        return jsonify({"status": "404"})
+
 
 def main() -> None:
     """
