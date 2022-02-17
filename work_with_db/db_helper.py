@@ -94,6 +94,60 @@ class DBHelper:
 
         return answer_list
 
+    def get_chat(self, username_from: str, username_to: str) -> list:
+        """
+        Получение чата для конкретного пользователя
+
+        :param username_from: Имя пользователя, от которого пришли сообщения
+        :param username_to: Имя пользователя, которому пришли сообщения
+
+        :return: Список диалога в виде:
+        [
+            {
+                "mine": bool,
+                "text": str,
+                "date": datetime.datetime
+            }
+        ]
+        """
+
+        self._cursor.execute(
+            f"select id from users where username = '{username_from}'"
+        )
+        answer_from_users_table = self._cursor.fetchall()
+        if len(answer_from_users_table) == 0:
+            return list()
+        user_id_from = int(answer_from_users_table[0][0])
+
+        self._cursor.execute(
+            f"select id from users where username = '{username_to}'"
+        )
+        answer_from_users_table = self._cursor.fetchall()
+        if len(answer_from_users_table) == 0:
+            return list()
+        user_id_to = int(answer_from_users_table[0][0])
+
+        self._cursor.execute(
+            f"select * from chats "
+            f"where "
+            f"(user_from = {user_id_from} or user_to = {user_id_from}) "
+            f"and "
+            f"(user_from = {user_id_to} or user_to = {user_id_to})"
+        )
+        answer_list = list()
+        for elem in self._cursor.fetchall():
+            is_mine = False
+            if elem[1] == user_id_from:
+                is_mine = True
+
+            answer_list.append({
+                "mine": is_mine,
+                "text": elem[3],
+                "date": elem[4]
+            })
+
+        return answer_list
+
     def login_in(self, username: str, password: str, is_mdfive: bool = False) -> dict | None:
         """
         Вход пользователя
@@ -183,7 +237,7 @@ def main() -> None:
     :return: Ничего
     """
 
-    print(DBHelper(**DBHelper.read_settings_file("../api_flask/help_files/database_settings.dk")).get_tasks())
+    pass
 
 
 if __name__ == '__main__':

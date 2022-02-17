@@ -2,10 +2,10 @@ POST http://127.0.0.1:5000//api/registration/
 Content-Type: application/json
 
 {
-  "username": "admin",
+  "username": "PirogovaDasha",
   "password": "?",
-  "name": "admin",
-  "surname": "admin",
+  "name": "Dasha",
+  "surname": "Pirogova",
   "is_mdfive": "0"
 }
 
