@@ -60,6 +60,17 @@ def login() -> Response:
         return jsonify({"status": "404"})
 
 
+@application.route("/api/tasks/", methods=["GET"])
+def get_tasks() -> Response:
+    """
+    Получение списка всех задач
+
+    :returns: Ответ json
+    """
+
+    return jsonify(db_helper.get_tasks())
+
+
 @application.route("/api/registration/", methods=["POST"])
 def registration() -> Response:
     """
