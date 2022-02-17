@@ -34,11 +34,18 @@ class DBHelper:
         """
         Возвращает список всех пользователей
 
-        :return: Список с пользователями
+        :return: Список с пользователями вида:
+        [
+            {
+                "id": int,
+                "username": str,
+                "password (md5)": str
+            }
+        ]
         """
 
         self._cursor.execute(
-            f"select * from users"
+            "select * from users"
         )
 
         answer_list = list()
@@ -47,6 +54,42 @@ class DBHelper:
                 "id": elem[0],
                 "username": elem[1],
                 "password (md5)": elem[2]
+            })
+
+        return answer_list
+
+    def get_tasks(self) -> list:
+        """
+        Получение списка задач
+
+        :return: Список с задачами вида:
+        [
+            {
+                "name": str,
+                "organization": str,
+                "description": str,
+                "teams_count": int or Null,
+                "region": str or Null,
+                "essay": bool or Null,
+                "test": bool or Null
+            }
+        ]
+        """
+
+        self._cursor.execute(
+            "select (name, organization, description, teams_count, region, essay, test) from tasks"
+        )
+
+        answer_list = list()
+        for elem in self._cursor.fetchall():
+            answer_list.append({
+                "name": elem[0],
+                "organization": elem[1],
+                "description": elem[2],
+                "teams_count": elem[3],
+                "region": elem[4],
+                "essay": elem[5],
+                "test": elem[6]
             })
 
         return answer_list
