@@ -1,10 +1,4 @@
-﻿using System;
-
-using DiplomApp.Services;
-using DiplomApp.Views;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
 namespace DiplomApp
 {
@@ -14,8 +8,6 @@ namespace DiplomApp
         public App()
         {
             InitializeComponent();
-
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 

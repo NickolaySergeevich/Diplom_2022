@@ -6,9 +6,9 @@ using Xamarin.Forms.Xaml;
 namespace DiplomApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentPage
+    public partial class TasksPage : ContentPage
     {
-        public LoginPage()
+        public TasksPage()
         {
             InitializeComponent();
         }
