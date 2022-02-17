@@ -45,6 +45,7 @@ def get_users() -> Response:
 def login() -> Response:
     """
     Вход в систему
+    Пароль передавать только в md5
 
     :return: Ответ json
     """
@@ -69,16 +70,23 @@ def registration() -> Response:
 
     request_data = request.get_json()
     if request_data is None:
+        return jsonify({"status": "404"})
+    if not all(key in request_data for key in ("username", "password", "name", "surname", "is_mdfive")):
         return jsonify({"status": False})
-    if not all(key in request_data for key in ("username", "password", "name", "surname")):
-        return jsonify({"status": "))"})
 
     username = request_data["username"]
     password = request_data["password"]
     name = request_data["name"]
     surname = request_data["surname"]
 
-    return jsonify({"status": db_helper.registration(username, password, name, surname, False)})
+    is_mdfive = bool()
+    try:
+        temp = int(request_data["is_mdfive"])
+        is_mdfive = bool(temp)
+    except ValueError:
+        return jsonify({"status": "422"})
+
+    return jsonify({"status": db_helper.registration(username, password, name, surname, is_mdfive)})
 
 
 def main() -> None:
