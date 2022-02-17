@@ -77,19 +77,19 @@ class DBHelper:
         """
 
         self._cursor.execute(
-            "select (name, organization, description, teams_count, region, essay, test) from tasks"
+            "select * from tasks"
         )
 
         answer_list = list()
         for elem in self._cursor.fetchall():
             answer_list.append({
-                "name": elem[0],
-                "organization": elem[1],
-                "description": elem[2],
-                "teams_count": elem[3],
-                "region": elem[4],
-                "essay": elem[5],
-                "test": elem[6]
+                "name": elem[1],
+                "organization": elem[2],
+                "description": elem[3],
+                "teams_count": elem[4],
+                "region": elem[5],
+                "essay": elem[6],
+                "test": elem[7]
             })
 
         return answer_list
@@ -183,7 +183,7 @@ def main() -> None:
     :return: Ничего
     """
 
-    pass
+    print(DBHelper(**DBHelper.read_settings_file("../api_flask/help_files/database_settings.dk")).get_tasks())
 
 
 if __name__ == '__main__':
