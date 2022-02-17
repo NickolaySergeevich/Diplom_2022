@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import hashlib
+from typing import Optional
 
 import mysql.connector
 
@@ -6,7 +9,14 @@ import mysql.connector
 class DBHelper:
     """
     Класс для работы с удалённой бд (MySQL)
+    Использует паттерн singleton
     """
+
+    __instance = None  # Объект в единственном виде
+    __connection = None  # Объект подключения к бд
+    __cursor = None  # Курсор в бд
+
+    settings_file = str()  # Путь до файла с настройками
 
     def __init__(self, user: str, password: str, host: str, database_name: str):
         """
@@ -18,8 +28,27 @@ class DBHelper:
         :param database_name: Имя базы данных
         """
 
-        self._connection = mysql.connector.connect(user=user, password=password, host=host, database=database_name)
-        self._cursor = self._connection.cursor()
+        if not DBHelper.__instance:
+            self.__connection = mysql.connector.connect(
+                user=user, password=password,
+                host=host, database=database_name
+            )
+            self.__cursor = self.__connection.cursor()
+
+            DBHelper.__instance = self
+
+    @staticmethod
+    def get_instance() -> DBHelper:
+        """
+        Получение текущего объекта - он может быть только один!
+
+        :return: Объект типа DBHelper
+        """
+
+        if not DBHelper.__instance:
+            DBHelper(**DBHelper.read_settings_file())
+
+        return DBHelper.__instance
 
     def __del__(self):
         """
@@ -28,127 +57,111 @@ class DBHelper:
         :return: Ничего
         """
 
-        self._connection.close()
+        DBHelper.get_instance().__connection.close()
 
-    def get_users(self) -> list:
+    @staticmethod
+    def get_users() -> tuple:
         """
-        Возвращает список всех пользователей
-
-        :return: Список с пользователями вида:
-        [
+        Возвращает список всех пользователей\n
+        (
             {
-                "id": int,
-                "username": str,
-                "password (md5)": str
+                "username": str,\n
+                "password": str
             }
-        ]
+        )
+
+        :return: Кортеж с пользователями
         """
 
-        self._cursor.execute(
-            "select * from users"
+        what_need = ("username", "password")
+
+        DBHelper.get_instance().__cursor.execute(
+            ("select " + "{}, " * (len(what_need) - 1) + "{} from users").format(*what_need)
         )
 
         answer_list = list()
-        for elem in self._cursor.fetchall():
-            answer_list.append({
-                "id": elem[0],
-                "username": elem[1],
-                "password (md5)": elem[2]
-            })
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
 
-        return answer_list
+        return tuple(answer_list)
 
-    def get_tasks(self) -> list:
+    @staticmethod
+    def get_tasks() -> tuple:
         """
-        Получение списка задач
-
-        :return: Список с задачами вида:
-        [
+        Получение списка задач\n
+        (
             {
-                "name": str,
-                "organization": str,
-                "description": str,
-                "teams_count": int or Null,
-                "region": str or Null,
-                "essay": bool or Null,
+                "name": str,\n
+                "organization": str,\n
+                "description": str,\n
+                "teams_count": int or Null,\n
+                "region": str or Null,\n
+                "essay": bool or Null,\n
                 "test": bool or Null
             }
-        ]
+        )
+
+        :return: Кортеж с задачами
         """
 
-        self._cursor.execute(
-            "select * from tasks"
+        what_need = ("name", "organization", "description", "teams_count", "region", "essay", "test")
+
+        DBHelper.get_instance().__cursor.execute(
+            ("select " + "{}, " * (len(what_need) - 1) + "{} from tasks").format(*what_need)
         )
 
         answer_list = list()
-        for elem in self._cursor.fetchall():
-            answer_list.append({
-                "name": elem[1],
-                "organization": elem[2],
-                "description": elem[3],
-                "teams_count": elem[4],
-                "region": elem[5],
-                "essay": elem[6],
-                "test": elem[7]
-            })
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
 
-        return answer_list
+        return tuple(answer_list)
 
-    def get_chat(self, username_from: str, username_to: str) -> list:
+    @staticmethod
+    def get_chat(username_from: str, username_to: str) -> tuple:
         """
-        Получение чата для конкретного пользователя
+        Получение чата для конкретного пользователя\n
+        (
+            {
+                "mine": bool,\n
+                "text": str,\n
+                "date": datetime.datetime
+            }
+        )
 
         :param username_from: Имя пользователя, от которого пришли сообщения
         :param username_to: Имя пользователя, которому пришли сообщения
 
-        :return: Список диалога в виде:
-        [
-            {
-                "mine": bool,
-                "text": str,
-                "date": datetime.datetime
-            }
-        ]
+        :return: Кортеж диалога
         """
 
-        self._cursor.execute(
-            f"select id from users where username = '{username_from}'"
-        )
-        answer_from_users_table = self._cursor.fetchall()
-        if len(answer_from_users_table) == 0:
-            return list()
-        user_id_from = int(answer_from_users_table[0][0])
+        # От первого параметра многое зависит
+        # Если менять его - менять цикл!
+        what_need = ("users.username", "chats.text", "chats.date")
+        query = ("select " + "{}, " * (len(what_need) - 1) + "{} " +
+                 "from users one, users two, chats " +
+                 "left join users " +
+                 "on chats.user_from = users.id " +
+                 "where " +
+                 "(one.username = '{}' and (chats.user_from = one.id or chats.user_to = one.id)) and " +
+                 "(two.username = '{}' and (chats.user_from = two.id or chats.user_to = two.id))").format(*what_need,
+                                                                                                          username_from,
+                                                                                                          username_to)
 
-        self._cursor.execute(
-            f"select id from users where username = '{username_to}'"
-        )
-        answer_from_users_table = self._cursor.fetchall()
-        if len(answer_from_users_table) == 0:
-            return list()
-        user_id_to = int(answer_from_users_table[0][0])
+        DBHelper.get_instance().__cursor.execute(query)
 
-        self._cursor.execute(
-            f"select * from chats "
-            f"where "
-            f"(user_from = {user_id_from} or user_to = {user_id_from}) "
-            f"and "
-            f"(user_from = {user_id_to} or user_to = {user_id_to})"
-        )
         answer_list = list()
-        for elem in self._cursor.fetchall():
+        for elem in DBHelper.get_instance().__cursor.fetchall():
             is_mine = False
-            if elem[1] == user_id_from:
+            if elem[0] == username_from:
                 is_mine = True
 
-            answer_list.append({
-                "mine": is_mine,
-                "text": elem[3],
-                "date": elem[4]
-            })
+            answer_list.append({"mine": is_mine})
+            answer_list[-1].update(**dict([(what_need[i], elem[i]) for i in range(1, len(what_need))]))
 
-        return answer_list
+        return tuple(answer_list)
 
-    def login_in(self, username: str, password: str, is_mdfive: bool = False) -> dict | None:
+    @staticmethod
+    def login_in(username: str, password: str, is_mdfive: bool = False) -> Optional[dict]:
         """
         Вход пользователя
 
@@ -162,24 +175,22 @@ class DBHelper:
         if not is_mdfive:
             password = hashlib.md5(password.encode("utf-8")).hexdigest()
 
-        self._cursor.execute(
-            f"select * from users where username = '{username}' and password = '{password}'"
-        )
-        answer_from_db = self._cursor.fetchall()
-        if len(answer_from_db) != 0:
-            self._cursor.execute(
-                f"select * from users_info where user_id = '{answer_from_db[0][0]}'"
-            )
-            answer_from_db = self._cursor.fetchall()[0]
+        what_need = ("name", "surname")
+        query = ("select " + "{}, " * (len(what_need) - 1) + "{} " +
+                 "from users_info " +
+                 "left join users " +
+                 "on users_info.user_id = users.id " +
+                 "where users.username = '{}' and users.password = '{}'").format(*what_need, username, password)
 
-            return {
-                "name": answer_from_db[2],
-                "surname": answer_from_db[3]
-            }
+        DBHelper.get_instance().__cursor.execute(query)
+        answer_from_db = DBHelper.get_instance().__cursor.fetchall()
+        if len(answer_from_db) != 0:
+            return dict([(what_need[i], answer_from_db[0][i]) for i in range(len(what_need))])
         else:
             return None
 
-    def registration(self, username: str, password: str, name: str, surname: str, is_mdfive: bool = False) -> bool:
+    @staticmethod
+    def registration(username: str, password: str, name: str, surname: str, is_mdfive: bool = False) -> bool:
         """
         Регистрация пользователя
 
@@ -196,33 +207,36 @@ class DBHelper:
             password = hashlib.md5(password.encode("utf-8")).hexdigest()
 
         try:
-            self._cursor.execute(
-                f"insert into users (username, password) values ('{username}', '{password}')"
-            )
-            id_new_user = self._cursor.lastrowid
-            self._cursor.execute(
-                f"insert into users_info (user_id, name, surname)"
-                f"values ({id_new_user}, '{name}', '{surname}')"
-            )
-            self._connection.commit()
+            what_need = ("username", "password")
+            query = ("insert into users (" + "{}, " * (len(what_need) - 1) + "{}) " +
+                     "values (" + "'{}', " * (len(what_need) - 1) + "'{}')").format(*what_need, username, password)
+            DBHelper.get_instance().__cursor.execute(query)
+
+            what_need = ("user_id", "name", "surname")
+            new_user_id = DBHelper.get_instance().__cursor.lastrowid
+            query = ("insert into users_info (" + "{}, " * (len(what_need) - 1) + "{})" +
+                     "values ({}, " + "'{}', " * (len(what_need) - 2) + "'{}')").format(*what_need,
+                                                                                        new_user_id,
+                                                                                        name, surname)
+            DBHelper.get_instance().__cursor.execute(query)
+
+            DBHelper.get_instance().__connection.commit()
         except mysql.connector.errors.IntegrityError:
             return False
 
         return True
 
     @staticmethod
-    def read_settings_file(filename: str) -> dict:
+    def read_settings_file() -> dict:
         """
-        Просто читает файл с настройками
-
-        :param filename: Имя файла
+        Читает файл с настройками
 
         :return: Словарь с настройками
         """
 
         settings = dict()
 
-        with open(filename, 'r') as settings_file:
+        with open(DBHelper.settings_file, 'r') as settings_file:
             for line in settings_file:
                 line_list = line.split('=')
                 settings[line_list[0]] = line_list[1][:-1]  # Убираем перенос строки
@@ -237,7 +251,13 @@ def main() -> None:
     :return: Ничего
     """
 
-    pass
+    DBHelper.settings_file = "help_files/database_settings.dk"
+
+    print(DBHelper.get_instance().get_users())  # Сделал!
+    print(DBHelper.get_instance().get_tasks())  # Сделал!
+    print(DBHelper.get_instance().get_chat("admin", "AlekseevNS"))  # Сделал!
+    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6", True))  # Сделал!
+    print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
 
 
 if __name__ == '__main__':
