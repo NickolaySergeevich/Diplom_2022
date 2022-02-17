@@ -60,20 +60,14 @@ class DBHelper:
         DBHelper.get_instance().__connection.close()
 
     @staticmethod
-    def get_users() -> tuple:
+    def __select_from_users(what_need: tuple) -> tuple:
         """
-        Возвращает список всех пользователей\n
-        (
-            {
-                "username": str,\n
-                "password": str
-            }
-        )
+        Делает запрос к таблице пользователей
 
-        :return: Кортеж с пользователями
+        :param what_need: Какие столбцы нужны
+
+        :return: Кортеж с ответом сервера
         """
-
-        what_need = ("username", "password")
 
         DBHelper.get_instance().__cursor.execute(
             ("select " + "{}, " * (len(what_need) - 1) + "{} from users").format(*what_need)
@@ -84,6 +78,33 @@ class DBHelper:
             answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
 
         return tuple(answer_list)
+
+    @staticmethod
+    def get_users() -> tuple:
+        """
+        Возвращает кортеж всех пользователей\n
+        (
+            {
+                "username": str,\n
+                "password": str
+            }
+        )
+
+        :return: Кортеж с пользователями
+        """
+
+        return DBHelper.get_instance().__select_from_users(("username", "password"))
+
+    @staticmethod
+    def get_users_name() -> tuple:
+        """
+        Возвращает кортеж имён всех пользователей\n
+        ({"username": str})
+
+        :return: Кортеж с именами пользователей
+        """
+
+        return DBHelper.get_instance().__select_from_users(("username",))
 
     @staticmethod
     def get_tasks() -> tuple:
@@ -161,7 +182,7 @@ class DBHelper:
         return tuple(answer_list)
 
     @staticmethod
-    def login_in(username: str, password: str, is_mdfive: bool = False) -> Optional[dict]:
+    def login_in(username: str, password: str, is_mdfive: bool = True) -> Optional[dict]:
         """
         Вход пользователя
 
@@ -254,9 +275,10 @@ def main() -> None:
     DBHelper.settings_file = "help_files/database_settings.dk"
 
     print(DBHelper.get_instance().get_users())  # Сделал!
+    print(DBHelper.get_instance().get_users_name())  # Сделал!
     print(DBHelper.get_instance().get_tasks())  # Сделал!
     print(DBHelper.get_instance().get_chat("admin", "AlekseevNS"))  # Сделал!
-    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6", True))  # Сделал!
+    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6"))  # Сделал!
     print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
 
 
