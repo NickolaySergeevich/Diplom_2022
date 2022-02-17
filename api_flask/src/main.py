@@ -71,6 +71,30 @@ def get_tasks() -> Response:
     return jsonify(db_helper.get_tasks())
 
 
+@application.route("/api/chats/", methods=["GET"])
+def get_chat() -> Response:
+    """
+    Получение чата для пользователей
+
+    :return: Ответ json
+    """
+
+    username_from = request.args.get("username_from")
+    password_from = request.args.get("password_from")
+    is_mdfive_password = request.args.get("is_md5")
+    username_to = request.args.get("username_to")
+
+    if is_mdfive_password == '0':
+        is_mdfive_password = False
+    else:
+        is_mdfive_password = True
+
+    if db_helper.login_in(username_from, password_from, is_mdfive_password) is not None:
+        return jsonify(db_helper.get_chat(username_from, username_to))
+    else:
+        return jsonify({"status": "404"})
+
+
 @application.route("/api/registration/", methods=["POST"])
 def registration() -> Response:
     """
