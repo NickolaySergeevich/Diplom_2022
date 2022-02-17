@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 
 from work_with_db.db_helper import DBHelper
 
@@ -16,6 +16,10 @@ class Application:
     __instance = None  # Объект в единственном виде
     __application = Flask(__name__)  # Переменная всего приложения Flask
     __wsgi_app = __application.wsgi_app  # Для запуска WSGI
+
+    # Codes
+    __NO_DATA = 404
+    __NO_DATA_IN_DB = 502
 
     def __init__(self):
         """
@@ -76,7 +80,31 @@ class Application:
         :return: json с именами пользователей
         """
 
-        return jsonify(DBHelper.get_instance().get_users())
+        return jsonify(DBHelper.get_instance().get_users_name())
+
+    @staticmethod
+    @__application.route("/api/login/", methods=["GET"])
+    def login() -> Response:
+        """
+        Вход в систему
+        Пароль передавать только в md5!
+
+        :return: Ответ либо информация о пользователе, либо ошибка
+        """
+
+        what_need = ("username", "password")
+
+        request_data = request.get_json()
+        if request_data is None or not all(key in request_data for key in what_need):
+            return jsonify({"status": Application.__NO_DATA})
+
+        data = dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
+
+        answer_from_db = DBHelper.get_instance().login_in(**data)
+        if answer_from_db is not None:
+            return jsonify(answer_from_db)
+        else:
+            return jsonify({"status": Application.__NO_DATA_IN_DB})
 
 
 # @application.route("/api/login/", methods=["GET"])

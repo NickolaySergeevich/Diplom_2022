@@ -82,7 +82,7 @@ class DBHelper:
     @staticmethod
     def get_users() -> tuple:
         """
-        Возвращает список всех пользователей\n
+        Возвращает кортеж всех пользователей\n
         (
             {
                 "username": str,\n
@@ -98,7 +98,7 @@ class DBHelper:
     @staticmethod
     def get_users_name() -> tuple:
         """
-        Возвращает список имён всех пользователей\n
+        Возвращает кортеж имён всех пользователей\n
         ({"username": str})
 
         :return: Кортеж с именами пользователей
@@ -182,7 +182,7 @@ class DBHelper:
         return tuple(answer_list)
 
     @staticmethod
-    def login_in(username: str, password: str, is_mdfive: bool = False) -> Optional[dict]:
+    def login_in(username: str, password: str, is_mdfive: bool = True) -> Optional[dict]:
         """
         Вход пользователя
 
@@ -278,7 +278,7 @@ def main() -> None:
     print(DBHelper.get_instance().get_users_name())  # Сделал!
     print(DBHelper.get_instance().get_tasks())  # Сделал!
     print(DBHelper.get_instance().get_chat("admin", "AlekseevNS"))  # Сделал!
-    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6", True))  # Сделал!
+    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6"))  # Сделал!
     print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
 
 
