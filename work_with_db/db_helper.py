@@ -60,6 +60,26 @@ class DBHelper:
         DBHelper.get_instance().__connection.close()
 
     @staticmethod
+    def __select_from_users(what_need: tuple) -> tuple:
+        """
+        Делает запрос к таблице пользователей
+
+        :param what_need: Какие столбцы нужны
+
+        :return: Кортеж с ответом сервера
+        """
+
+        DBHelper.get_instance().__cursor.execute(
+            ("select " + "{}, " * (len(what_need) - 1) + "{} from users").format(*what_need)
+        )
+
+        answer_list = list()
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
+
+        return tuple(answer_list)
+
+    @staticmethod
     def get_users() -> tuple:
         """
         Возвращает список всех пользователей\n
@@ -73,17 +93,18 @@ class DBHelper:
         :return: Кортеж с пользователями
         """
 
-        what_need = ("username", "password")
+        return DBHelper.get_instance().__select_from_users(("username", "password"))
 
-        DBHelper.get_instance().__cursor.execute(
-            ("select " + "{}, " * (len(what_need) - 1) + "{} from users").format(*what_need)
-        )
+    @staticmethod
+    def get_users_name() -> tuple:
+        """
+        Возвращает список имён всех пользователей\n
+        ({"username": str})
 
-        answer_list = list()
-        for elem in DBHelper.get_instance().__cursor.fetchall():
-            answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
+        :return: Кортеж с именами пользователей
+        """
 
-        return tuple(answer_list)
+        return DBHelper.get_instance().__select_from_users(("username",))
 
     @staticmethod
     def get_tasks() -> tuple:
@@ -254,6 +275,7 @@ def main() -> None:
     DBHelper.settings_file = "help_files/database_settings.dk"
 
     print(DBHelper.get_instance().get_users())  # Сделал!
+    print(DBHelper.get_instance().get_users_name())  # Сделал!
     print(DBHelper.get_instance().get_tasks())  # Сделал!
     print(DBHelper.get_instance().get_chat("admin", "AlekseevNS"))  # Сделал!
     print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6", True))  # Сделал!
