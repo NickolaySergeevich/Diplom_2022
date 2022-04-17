@@ -255,6 +255,9 @@ class DBHelper:
         :return: Словарь с настройками
         """
 
+        if DBHelper.settings_file == str():
+            raise FileNotFoundError
+
         settings = dict()
 
         with open(DBHelper.settings_file, 'r') as settings_file:
@@ -272,14 +275,14 @@ def main() -> None:
     :return: Ничего
     """
 
-    DBHelper.settings_file = "help_files/database_settings.dk"
+    # DBHelper.settings_file = "help_files/database_settings.dk"
 
-    print(DBHelper.get_instance().get_users())  # Сделал!
-    print(DBHelper.get_instance().get_users_name())  # Сделал!
-    print(DBHelper.get_instance().get_tasks())  # Сделал!
-    print(DBHelper.get_instance().get_chat("admin", "AlekseevNS"))  # Сделал!
-    print(DBHelper.get_instance().login_in("admin", "0411856660b3f2b47800daf18681c5d6"))  # Сделал!
-    print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
+    # print(DBHelper.get_instance().get_users())  # Сделал!
+    # print(DBHelper.get_instance().get_users_name())  # Сделал!
+    # print(DBHelper.get_instance().get_tasks())  # Сделал!
+    # print(DBHelper.get_instance().get_chat("dasha", "asakura"))  # Сделал!
+    # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))  # Сделал!
+    # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
 
 
 if __name__ == '__main__':
