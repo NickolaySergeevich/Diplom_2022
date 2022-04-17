@@ -1,3 +1,5 @@
+"""Модуль для api всего проекта"""
+
 from __future__ import annotations
 
 import os
@@ -34,7 +36,7 @@ class Application:
             if os.name == "nt":
                 DBHelper.settings_file = "../../work_with_db/help_files/database_settings.dk"
             else:
-                DBHelper.settings_file = "/home/std/diplom_2022/api_flask/help_files/database_settings.dk"
+                DBHelper.settings_file = "/home/std/diplom/work_with_db/help_files/database_settings.dk"
 
     @staticmethod
     def get_instance() -> Application:
@@ -106,37 +108,18 @@ class Application:
         else:
             return jsonify({"status": Application.__NO_DATA_IN_DB})
 
+    @staticmethod
+    @__application.route("/api/tasks/", methods=["GET"])
+    def get_tasks() -> Response:
+        """
+        Получение списка задач
 
-# @application.route("/api/login/", methods=["GET"])
-# def login() -> Response:
-#     """
-#     Вход в систему
-#     Пароль передавать только в md5
-#
-#     :return: Ответ json
-#     """
-#
-#     username = request.args.get("username")
-#     password = request.args.get("password")
-#
-#     answer_from_db = db_helper.login_in(username, password, True)
-#     if answer_from_db is not None:
-#         return jsonify(answer_from_db)
-#     else:
-#         return jsonify({"status": "404"})
-#
-#
-# @application.route("/api/tasks/", methods=["GET"])
-# def get_tasks() -> Response:
-#     """
-#     Получение списка всех задач
-#
-#     :returns: Ответ json
-#     """
-#
-#     return jsonify(db_helper.get_tasks())
-#
-#
+        :return: Ответ от сервера или ошибка
+        """
+
+        return jsonify(DBHelper.get_instance().get_tasks())
+
+
 # @application.route("/api/chats/", methods=["GET"])
 # def get_chat() -> Response:
 #     """
