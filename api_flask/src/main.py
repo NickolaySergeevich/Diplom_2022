@@ -96,6 +96,8 @@ class Application:
         """
 
         data = Application.get_data_from_json(("username", "password"), request.get_json())
+        if data is None:
+            return jsonify({"status": Application.__NO_DATA})
 
         answer_from_db = DBHelper.get_instance().login_in(**data)
         if answer_from_db is not None:
@@ -124,10 +126,28 @@ class Application:
         """
 
         data = Application.get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+        if data is None:
+            return jsonify({"status": Application.__NO_DATA})
+
         if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
             return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
         else:
             return jsonify({"status": Application.__NO_DATA_IN_DB})
+
+    @staticmethod
+    @__application.route("/api/registration/", methods=["POST"])
+    def registration() -> Response:
+        """
+        Регистрация нового пользователя
+
+        :return: Json с информацией о том, успешно ли всё прошло
+        """
+
+        data = Application.get_data_from_json(("username", "password", "name", "surname"), request.get_json())
+        if data is None:
+            return jsonify({"status": Application.__NO_DATA})
+
+        return jsonify({"status": DBHelper.get_instance().registration(**data)})
 
     @staticmethod
     def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
@@ -144,59 +164,6 @@ class Application:
             return None
 
         return dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
-
-
-# @application.route("/api/chats/", methods=["GET"])
-# def get_chat() -> Response:
-#     """
-#     Получение чата для пользователей
-#
-#     :return: Ответ json
-#     """
-#
-#     username_from = request.args.get("username_from")
-#     password_from = request.args.get("password_from")
-#     is_mdfive_password = request.args.get("is_md5")
-#     username_to = request.args.get("username_to")
-#
-#     if is_mdfive_password == '0':
-#         is_mdfive_password = False
-#     else:
-#         is_mdfive_password = True
-#
-#     if db_helper.login_in(username_from, password_from, is_mdfive_password) is not None:
-#         return jsonify(db_helper.get_chat(username_from, username_to))
-#     else:
-#         return jsonify({"status": "404"})
-#
-#
-# @application.route("/api/registration/", methods=["POST"])
-# def registration() -> Response:
-#     """
-#     Регистрация нового пользователя
-#
-#     :return: Ответ Json
-#     """
-#
-#     request_data = request.get_json()
-#     if request_data is None:
-#         return jsonify({"status": "404"})
-#     if not all(key in request_data for key in ("username", "password", "name", "surname", "is_mdfive")):
-#         return jsonify({"status": False})
-#
-#     username = request_data["username"]
-#     password = request_data["password"]
-#     name = request_data["name"]
-#     surname = request_data["surname"]
-#
-#     is_mdfive = bool()
-#     try:
-#         temp = int(request_data["is_mdfive"])
-#         is_mdfive = bool(temp)
-#     except ValueError:
-#         return jsonify({"status": "422"})
-#
-#     return jsonify({"status": db_helper.registration(username, password, name, surname, is_mdfive)})
 
 
 def main() -> None:
