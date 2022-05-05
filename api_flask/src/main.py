@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from typing import Optional
 
 from flask import Flask, Response, jsonify, request
 
@@ -66,7 +67,7 @@ class Application:
     def start_api_page() -> str:
         """
         Стартовая страница
-        TODO Добавить описание api
+        TODO - Добавить описание api
 
         :return: Пока строка с "Привет, Мир!"
         """
@@ -94,13 +95,7 @@ class Application:
         :return: Ответ либо информация о пользователе, либо ошибка
         """
 
-        what_need = ("username", "password")
-
-        request_data = request.get_json()
-        if request_data is None or not all(key in request_data for key in what_need):
-            return jsonify({"status": Application.__NO_DATA})
-
-        data = dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
+        data = Application.get_data_from_json(("username", "password"), request.get_json())
 
         answer_from_db = DBHelper.get_instance().login_in(**data)
         if answer_from_db is not None:
@@ -118,6 +113,37 @@ class Application:
         """
 
         return jsonify(DBHelper.get_instance().get_tasks())
+
+    @staticmethod
+    @__application.route("/api/chats/", methods=["GET"])
+    def get_chat() -> Response:
+        """
+        Получение чата для пользователей
+
+        :return: Json с чатом
+        """
+
+        data = Application.get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+        if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
+            return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
+        else:
+            return jsonify({"status": Application.__NO_DATA_IN_DB})
+
+    @staticmethod
+    def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
+        """
+        Получение данных из json
+
+        :param what_need: Какие поля нужны
+        :param request_data: То, что отправил пользователь
+
+        :return: Словарь с данными или None
+        """
+
+        if request_data is None or not all(key in request_data for key in what_need):
+            return None
+
+        return dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
 
 
 # @application.route("/api/chats/", methods=["GET"])
