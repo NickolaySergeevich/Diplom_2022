@@ -211,7 +211,7 @@ class DBHelper:
             return None
 
     @staticmethod
-    def registration(username: str, password: str, name: str, surname: str, is_mdfive: bool = False) -> bool:
+    def registration(username: str, password: str, name: str, surname: str, is_mdfive: bool = True) -> bool:
         """
         Регистрация пользователя
 
