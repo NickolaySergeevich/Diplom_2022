@@ -60,7 +60,7 @@ class Application:
         :return: Ничего
         """
 
-        Application.get_instance().__application.run()
+        Application.get_instance().__application.run(debug=False)
 
     @staticmethod
     @__application.route("/api/")
