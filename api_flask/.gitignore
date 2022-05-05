@@ -374,3 +374,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,flask,windows
 /tests/http-client.private.env.json
 /tests/main.http
+/test_api/test.http
