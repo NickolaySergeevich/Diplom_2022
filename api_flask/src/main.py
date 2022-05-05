@@ -9,161 +9,119 @@ from flask import Flask, Response, jsonify, request
 
 from work_with_db.db_helper import DBHelper
 
+# Codes
+NO_DATA = 404
+NO_DATA_IN_DB = 502
 
-class Application:
+application = Flask(__name__)  # Переменная всего приложения Flask
+
+if os.name == "nt":
+    DBHelper.settings_file = "../../work_with_db/help_files/database_settings.dk"
+else:
+    DBHelper.settings_file = "/home/std/diplom/work_with_db/help_files/database_settings.dk"
+
+
+@application.route("/api/")
+def start_api_page() -> str:
     """
-    Класс для обработки api.
-    Использует паттерн singleton
+    Стартовая страница
+    TODO - Добавить описание api
+
+    :return: Пока строка с "Привет, Мир!"
     """
 
-    __instance = None  # Объект в единственном виде
-    __application = Flask(__name__)  # Переменная всего приложения Flask
-    __wsgi_app = __application.wsgi_app  # Для запуска WSGI
+    return "Hello, World!"
 
-    # Codes
-    __NO_DATA = 404
-    __NO_DATA_IN_DB = 502
 
-    def __init__(self):
-        """
-        Конструктор стандартный - создаёт приложение Flask и WSGI
-        + Определяет настройки для бд
-        """
+@application.route("/api/users/", methods=["GET"])
+def get_users() -> Response:
+    """
+    Получение имён всех пользователей
 
-        if not Application.__instance:
-            Application.__instance = self
+    :return: json с именами пользователей
+    """
 
-            # Определение файла настроек для бд
-            if os.name == "nt":
-                DBHelper.settings_file = "../../work_with_db/help_files/database_settings.dk"
-            else:
-                DBHelper.settings_file = "/home/std/diplom/work_with_db/help_files/database_settings.dk"
+    return jsonify(DBHelper.get_instance().get_users_name())
 
-    @staticmethod
-    def get_instance() -> Application:
-        """
-        Получение текущего объекта - он может быть только один!
 
-        :return: Объект типа Application
-        """
+@application.route("/api/login/", methods=["GET"])
+def login() -> Response:
+    """
+    Вход в систему
+    Пароль передавать только в md5!
 
-        if not Application.__instance:
-            Application()
+    :return: Ответ либо информация о пользователе, либо ошибка
+    """
 
-        return Application.__instance
+    data = get_data_from_json(("username", "password"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
 
-    @staticmethod
-    def start_server() -> None:
-        """
-        Запускает сервер
+    answer_from_db = DBHelper.get_instance().login_in(**data)
+    if answer_from_db is not None:
+        return jsonify(answer_from_db)
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
 
-        :return: Ничего
-        """
 
-        Application.get_instance().__application.run()
+@application.route("/api/tasks/", methods=["GET"])
+def get_tasks() -> Response:
+    """
+    Получение списка задач
 
-    @staticmethod
-    @__application.route("/api/")
-    def start_api_page() -> str:
-        """
-        Стартовая страница
-        TODO - Добавить описание api
+    :return: Ответ от сервера или ошибка
+    """
 
-        :return: Пока строка с "Привет, Мир!"
-        """
+    return jsonify(DBHelper.get_instance().get_tasks())
 
-        return "Hello, World!"
 
-    @staticmethod
-    @__application.route("/api/users/", methods=["GET"])
-    def get_users() -> Response:
-        """
-        Получение имён всех пользователей
+@application.route("/api/chats/", methods=["GET"])
+def get_chat() -> Response:
+    """
+    Получение чата для пользователей
 
-        :return: json с именами пользователей
-        """
+    :return: Json с чатом
+    """
 
-        return jsonify(DBHelper.get_instance().get_users_name())
+    data = get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
 
-    @staticmethod
-    @__application.route("/api/login/", methods=["GET"])
-    def login() -> Response:
-        """
-        Вход в систему
-        Пароль передавать только в md5!
+    if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
+        return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
 
-        :return: Ответ либо информация о пользователе, либо ошибка
-        """
 
-        data = Application.get_data_from_json(("username", "password"), request.get_json())
-        if data is None:
-            return jsonify({"status": Application.__NO_DATA})
+@application.route("/api/registration/", methods=["POST"])
+def registration() -> Response:
+    """
+    Регистрация нового пользователя
 
-        answer_from_db = DBHelper.get_instance().login_in(**data)
-        if answer_from_db is not None:
-            return jsonify(answer_from_db)
-        else:
-            return jsonify({"status": Application.__NO_DATA_IN_DB})
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
 
-    @staticmethod
-    @__application.route("/api/tasks/", methods=["GET"])
-    def get_tasks() -> Response:
-        """
-        Получение списка задач
+    data = get_data_from_json(("username", "password", "name", "surname"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
 
-        :return: Ответ от сервера или ошибка
-        """
+    return jsonify({"status": DBHelper.get_instance().registration(**data)})
 
-        return jsonify(DBHelper.get_instance().get_tasks())
 
-    @staticmethod
-    @__application.route("/api/chats/", methods=["GET"])
-    def get_chat() -> Response:
-        """
-        Получение чата для пользователей
+def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
+    """
+    Получение данных из json
 
-        :return: Json с чатом
-        """
+    :param what_need: Какие поля нужны
+    :param request_data: То, что отправил пользователь
 
-        data = Application.get_data_from_json(("user_from", "user_to", "password"), request.get_json())
-        if data is None:
-            return jsonify({"status": Application.__NO_DATA})
+    :return: Словарь с данными или None
+    """
 
-        if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
-            return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
-        else:
-            return jsonify({"status": Application.__NO_DATA_IN_DB})
+    if request_data is None or not all(key in request_data for key in what_need):
+        return None
 
-    @staticmethod
-    @__application.route("/api/registration/", methods=["POST"])
-    def registration() -> Response:
-        """
-        Регистрация нового пользователя
-
-        :return: Json с информацией о том, успешно ли всё прошло
-        """
-
-        data = Application.get_data_from_json(("username", "password", "name", "surname"), request.get_json())
-        if data is None:
-            return jsonify({"status": Application.__NO_DATA})
-
-        return jsonify({"status": DBHelper.get_instance().registration(**data)})
-
-    @staticmethod
-    def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
-        """
-        Получение данных из json
-
-        :param what_need: Какие поля нужны
-        :param request_data: То, что отправил пользователь
-
-        :return: Словарь с данными или None
-        """
-
-        if request_data is None or not all(key in request_data for key in what_need):
-            return None
-
-        return dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
+    return dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
 
 
 def main() -> None:
@@ -173,7 +131,7 @@ def main() -> None:
     :return: Ничего
     """
 
-    Application.get_instance().start_server()
+    application.run()
 
 
 if __name__ == '__main__':
