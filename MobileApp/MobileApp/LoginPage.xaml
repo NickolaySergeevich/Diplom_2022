@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.MainPage">
+
+    <Grid HorizontalOptions="Center" VerticalOptions="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Login" />
+        <Entry x:Name="entry_password" IsPassword="True" Grid.Row="1" Grid.ColumnSpan="2" Placeholder="Password" />
+
+        <Button x:Name="button_login" Grid.Row="2" Text="Войти" Clicked="Button_login_Clicked" />
+        <Button x:Name="button_registration" Grid.Row="2" Grid.Column="1" Text="Зарегистрироваться" Clicked="Button_registration_Clicked" />
+    </Grid>
+
+</ContentPage>
