@@ -6,6 +6,7 @@ import os
 from typing import Optional
 
 from flask import Flask, Response, jsonify, request
+from werkzeug.datastructures import MultiDict
 
 from work_with_db.db_helper import DBHelper
 
@@ -53,7 +54,7 @@ def login() -> Response:
     :return: Ответ либо информация о пользователе, либо ошибка
     """
 
-    data = get_data_from_json(("username", "password"), request.get_json())
+    data = get_data_from_args(("username", "password"), request.args)
     if data is None:
         return jsonify({"status": NO_DATA})
 
@@ -122,6 +123,22 @@ def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
         return None
 
     return dict([(what_need[i], request_data[what_need[i]]) for i in range(len(what_need))])
+
+
+def get_data_from_args(what_need: tuple, args: MultiDict[str, str]) -> Optional[dict]:
+    """
+    Получение словаря с данными из аргументов пользователя
+
+    :param what_need: Какие поля нужны
+    :param args: Аргументы запроса
+
+    :return: Словарь с данными или None
+    """
+
+    if args is None or not all(key in args.to_dict() for key in what_need):
+        return None
+
+    return args.to_dict()
 
 
 def main() -> None:
