@@ -23,7 +23,7 @@ namespace MobileApp
             var request = WebRequest.Create("http://diplom.std-918.ist.mospolytech.ru/api/");
             var response = request.GetResponse();
 
-            Console.WriteLine(response.GetResponseStream());
+            Console.WriteLine(response.GetResponseStream().);
         }
 
         private void Button_registration_Clicked(object sender, EventArgs e)
