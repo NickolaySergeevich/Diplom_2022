@@ -21,7 +21,7 @@ namespace MobileApp.Pages
 
         private async void Button_login_Clicked(object sender, EventArgs e)
         {
-            if (entry_login.Text == string.Empty || entry_login.Text == string.Empty)
+            if (string.IsNullOrEmpty(entry_login.Text) || string.IsNullOrEmpty(entry_password.Text))
             {
                 await DisplayAlert("Внимание", "Не заполнены поля для входа", "OK");
                 return;
@@ -48,7 +48,7 @@ namespace MobileApp.Pages
 
         private void Button_registration_Clicked(object sender, EventArgs e)
         {
-
+            Application.Current.MainPage = new RegistrationPage();
         }
     }
 }

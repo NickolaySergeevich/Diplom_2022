@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
+using MobileApp.ApiJsonRequest;
 using MobileApp.ApiJsonResponse;
 
 using Newtonsoft.Json;
@@ -38,6 +40,31 @@ namespace MobileApp
             }
 
             return loginResponse;
+        }
+
+        public async Task<RegistrationResponse> GetRegistrationResponseAsync(string url,
+            RegistrationRequest requestData)
+        {
+            RegistrationResponse registrationResponse = null;
+
+            var postData = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, postData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    registrationResponse = JsonConvert.DeserializeObject<RegistrationResponse>(content);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("\tERROR {0}", exception.Message);
+            }
+
+            return registrationResponse;
         }
     }
 }
