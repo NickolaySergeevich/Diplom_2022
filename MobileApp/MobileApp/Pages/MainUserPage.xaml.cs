@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MobileApp
+namespace MobileApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainUserPage : TabbedPage

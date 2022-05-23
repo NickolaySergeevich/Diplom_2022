@@ -3,14 +3,16 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
-namespace MobileApp
+namespace MobileApp.Pages
 {
-    public partial class MainPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class LoginPage
     {
         private readonly RestService _restService;
 
-        public MainPage()
+        public LoginPage()
         {
             InitializeComponent();
 
