@@ -30,6 +30,8 @@ namespace MobileApp.Pages
             var login = entry_login.Text;
             var password = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(entry_password.Text))).Replace("-", string.Empty);
 
+            button_login.IsEnabled = false;
+
             var response = await _restService.GetLoginResponseAsync(Constants.LoginAddress + "?username=" + login + "&password=" + password);
             switch (response.Status)
             {
@@ -44,6 +46,7 @@ namespace MobileApp.Pages
                     break;
             }
 
+            button_login.IsEnabled = true;
         }
 
         private void Button_registration_Clicked(object sender, EventArgs e)

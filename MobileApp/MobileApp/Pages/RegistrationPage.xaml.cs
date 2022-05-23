@@ -37,6 +37,8 @@ namespace MobileApp.Pages
                 Surname = entry_surname.Text
             };
 
+            button_registration.IsEnabled = false;
+
             var response =
                 await _restService.GetRegistrationResponseAsync(Constants.RegistrationAddress, registrationRequest);
             switch (response.Status)
@@ -56,6 +58,8 @@ namespace MobileApp.Pages
                     await DisplayAlert("Успех", "Вы успешно зарегистрированы!", "OK");
                     break;
             }
+
+            button_registration.IsEnabled = true;
         }
 
         private void Button_exit_OnClicked(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
@@ -40,6 +41,28 @@ namespace MobileApp
             }
 
             return loginResponse;
+        }
+
+        public async Task<List<TasksResponse>> GetTasksResponseAsync(string url)
+        {
+            List<TasksResponse> tasks = null;
+
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    tasks = JsonConvert.DeserializeObject<List<TasksResponse>>(content);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("\tERROR {0}", exception.Message);
+            }
+
+            return tasks;
         }
 
         public async Task<RegistrationResponse> GetRegistrationResponseAsync(string url,

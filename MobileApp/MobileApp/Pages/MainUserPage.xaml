@@ -2,7 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:MainUserPage"
             x:Class="MobileApp.Pages.MainUserPage">
-    <ContentPage Title="Tab 1" />
+    <ContentPage Title="Кейсы" />
     <ContentPage Title="Tab 2" />
     <ContentPage Title="Tab 3" />
 </TabbedPage>

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainUserPage : TabbedPage
+    public partial class MainUserPage
     {
+        private readonly RestService _restService;
+
         public MainUserPage()
         {
             InitializeComponent();
+
+            _restService = new RestService();
         }
     }
 }
