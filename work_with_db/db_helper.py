@@ -274,6 +274,30 @@ class DBHelper:
         return True
 
     @staticmethod
+    def remove_from_task(users_id: tuple, task_id: int) -> bool:
+        """
+        Удаляет команду с конкурса
+
+        :param users_id: Кортеж пользовательских id
+        :param task_id: ID конкурса
+
+        :return: Успешно ли
+        """
+
+        for user_id in users_id:
+            query = f"delete from users_to_task where user_id = {user_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+        if DBHelper.get_instance().__cursor.rowcount == 0:
+            return False
+
+        query = f"update tasks set teams_exist = teams_exist - 1 where id = {task_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        DBHelper.get_instance().__connection.commit()
+
+        return True
+
+    @staticmethod
     def read_settings_file() -> dict:
         """
         Читает файл с настройками
@@ -310,6 +334,7 @@ def main() -> None:
     # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))  # Сделал!
     # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
     # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
+    # print(DBHelper.get_instance().remove_from_task((1, 2), 1))  # Сделал!
 
 
 if __name__ == '__main__':
