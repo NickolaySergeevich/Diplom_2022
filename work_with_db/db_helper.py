@@ -196,7 +196,7 @@ class DBHelper:
         if not is_mdfive:
             password = hashlib.md5(password.encode("utf-8")).hexdigest()
 
-        what_need = ("name", "surname")
+        what_need = ("users_info.name", "users_info.surname", "users.username", "users.password")
         query = ("select " + "{}, " * (len(what_need) - 1) + "{} " +
                  "from users_info " +
                  "left join users " +
@@ -206,7 +206,7 @@ class DBHelper:
         DBHelper.get_instance().__cursor.execute(query)
         answer_from_db = DBHelper.get_instance().__cursor.fetchall()
         if len(answer_from_db) != 0:
-            return dict([(what_need[i], answer_from_db[0][i]) for i in range(len(what_need))])
+            return dict([(what_need[i].split('.')[1], answer_from_db[0][i]) for i in range(len(what_need))])
         else:
             return None
 
