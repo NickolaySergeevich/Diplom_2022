@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 using MobileApp.ApiJsonResponse;
 
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Pages
@@ -26,9 +28,18 @@ namespace MobileApp.Pages
         {
             var tasks = await _restService.GetTasksResponseAsync(Constants.TasksAddress);
             foreach (var task in tasks)
-            {
                 Tasks.Add(task);
-            }
+        }
+
+        private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Application.Current.MainPage = new ViewTaskPage((TasksResponse)e.Item);
+        }
+
+        private void Button_reloadListTasks_OnClicked(object sender, EventArgs e)
+        {
+            Tasks.Clear();
+            OnAppearing();
         }
     }
 }
