@@ -4,14 +4,19 @@
              xmlns:responses="clr-namespace:MobileApp.ApiJsonResponse"
             x:Class="MobileApp.Pages.MainUserPage">
     <ContentPage Title="Кейсы" >
-        <ListView x:Name="listView_tasks">
+        <ListView x:Name="listView_tasks" HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout x:DataType="responses:TasksResponse">
-                            <Label Text="{Binding Name}" FontSize="Large"></Label>
-                            <Label Text="{Binding Description}" FontSize="Small"></Label>
-                        </StackLayout>
+                        <Grid x:DataType="responses:TasksResponse" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Text="{Binding Name}" FontSize="Medium"></Label>
+                            <Label Grid.Row="1" Text="{Binding Organization}" FontSize="Small"></Label>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
