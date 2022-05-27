@@ -11,12 +11,14 @@ namespace MobileApp.Pages
     public partial class ViewTaskPage
     {
         private readonly TasksResponse _tasksResponse;
+        private readonly LoginResponse _loginResponse;
 
-        public ViewTaskPage(TasksResponse tasksResponse)
+        public ViewTaskPage(TasksResponse tasksResponse, LoginResponse loginResponse)
         {
             InitializeComponent();
 
             _tasksResponse = tasksResponse;
+            _loginResponse = loginResponse;
 
             label_name.Text = _tasksResponse.Name;
             label_organization.Text = _tasksResponse.Organization;
@@ -45,6 +47,7 @@ namespace MobileApp.Pages
                 label_isTest.Text += "есть";
             else
                 label_isTest.Text += "нет";
+            _loginResponse = loginResponse;
         }
 
         private void Button_insert_OnClicked(object sender, EventArgs e)
@@ -54,7 +57,7 @@ namespace MobileApp.Pages
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new MainUserPage();
+            Application.Current.MainPage = new MainUserPage(_loginResponse);
         }
     }
 }

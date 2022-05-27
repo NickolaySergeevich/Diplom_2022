@@ -24,8 +24,9 @@ namespace MobileApp.Pages
             _restService = new RestService();
 
             _loginResponse = loginResponse;
-            label_name.Text = "Имя " + _loginResponse.Name;
-            label_surname.Text = "Фамилия " + _loginResponse.Surname;
+            label_name.Text = "Имя: " + _loginResponse.Name;
+            label_surname.Text = "Фамилия: " + _loginResponse.Surname;
+            label_login.Text = "Логин: " + _loginResponse.Username;
 
             listView_tasks.ItemsSource = Tasks;
         }
@@ -39,7 +40,7 @@ namespace MobileApp.Pages
 
         private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            Application.Current.MainPage = new ViewTaskPage((TasksResponse)e.Item);
+            Application.Current.MainPage = new ViewTaskPage((TasksResponse)e.Item, _loginResponse);
         }
 
         private void Button_reloadListTasks_OnClicked(object sender, EventArgs e)
