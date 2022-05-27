@@ -31,5 +31,33 @@
         </Grid>
     </ContentPage>
     <ContentPage Title="Tab 2" />
-    <ContentPage Title="Tab 3" />
+    <ContentPage Title="Аккаунт" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="label_name" FontSize="Medium"></Label>
+            <Label x:Name="label_surname" Grid.Row="1" FontSize="Medium"></Label>
+            <Label x:Name="label_login" Grid.Row="2" FontSize="Medium"></Label>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="button_changeInformation" Text="Сменить имя"></Button>
+                <Button x:Name="button_changeLogin" Grid.Column="1" Text="Сменить логин"></Button>
+                <Button x:Name="button_changePassword" Grid.Column="2" Text="Сменить пароль"></Button>
+            </Grid>
+
+            <ListView x:Name="listView_groups" Grid.Row="4" SelectionMode="None"></ListView>
+        </Grid>
+    </ContentPage>
 </TabbedPage>

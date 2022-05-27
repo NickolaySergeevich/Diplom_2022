@@ -2,7 +2,7 @@
 
 namespace MobileApp.ApiJsonResponse
 {
-    internal class LoginResponse
+    public class LoginResponse
     {
         [JsonProperty("name")]
         public string Name { get; set; }
