@@ -37,7 +37,6 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
@@ -45,19 +44,7 @@
             <Label x:Name="label_surname" Grid.Row="1" FontSize="Medium"></Label>
             <Label x:Name="label_login" Grid.Row="2" FontSize="Medium"></Label>
 
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button x:Name="button_changeInformation" Text="Сменить имя"></Button>
-                <Button x:Name="button_changeLogin" Grid.Column="1" Text="Сменить логин"></Button>
-                <Button x:Name="button_changePassword" Grid.Column="2" Text="Сменить пароль"></Button>
-            </Grid>
-
-            <StackLayout Grid.Row="4" Margin="0, 10">
+            <StackLayout Grid.Row="3" Margin="0, 10">
                 <Label Text="Список ваших проектов:"></Label>
                 <ListView x:Name="listView_groups" SelectionMode="None"></ListView>
             </StackLayout>
