@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages"
+             xmlns:viewCells="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
+             x:DataType="pages:MainUserPage"
+             x:Class="MobileApp.Pages.SignUpToTaskPage">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="label_taskName" FontSize="Medium"></Label>
+        <Label x:Name="label_taskOrganization" Grid.Row="1" FontSize="Small"></Label>
+
+        <Grid Grid.Row="2" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Text="Список команды:" FontSize="Small"></Label>
+            <ListView x:Name="listView_group" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <viewCells:GroupCell></viewCells:GroupCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="button_signUp" Text="Записаться"></Button>
+            <Button x:Name="button_exit" Grid.Column="1" Text="Выход"></Button>
+        </Grid>
+    </Grid>
+</ContentPage>
