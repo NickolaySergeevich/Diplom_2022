@@ -125,7 +125,7 @@ class DBHelper:
         :return: Кортеж с задачами
         """
 
-        what_need = ("name", "organization", "description", "teams_count", "region", "essay", "test")
+        what_need = ("id", "name", "organization", "description", "teams_count", "region", "essay", "test")
 
         DBHelper.get_instance().__cursor.execute(
             ("select " + "{}, " * (len(what_need) - 1) + "{} from tasks").format(*what_need)
@@ -196,7 +196,7 @@ class DBHelper:
         if not is_mdfive:
             password = hashlib.md5(password.encode("utf-8")).hexdigest()
 
-        what_need = ("users_info.name", "users_info.surname", "users.username", "users.password")
+        what_need = ("users.id", "users_info.name", "users_info.surname", "users.username", "users.password")
         query = ("select " + "{}, " * (len(what_need) - 1) + "{} " +
                  "from users_info " +
                  "left join users " +
@@ -248,6 +248,32 @@ class DBHelper:
         return True
 
     @staticmethod
+    def sign_up_to_task(users_id: tuple, tasks_id: int) -> bool:
+        """
+        Записывает участников на конкурс
+
+        :param users_id: Кортеж пользовательских id
+        :param tasks_id: ID конкурса
+
+        :return: Успешно ли
+        """
+
+        try:
+            for user_id in users_id:
+                query = f"insert into users_to_task (user_id, task_id) values ({user_id}, {tasks_id})"
+                DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        query = f"update tasks set teams_exist = teams_exist + 1 where id = {tasks_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        DBHelper.get_instance().__connection.commit()
+
+        return True
+
+    @staticmethod
     def read_settings_file() -> dict:
         """
         Читает файл с настройками
@@ -283,6 +309,7 @@ def main() -> None:
     # print(DBHelper.get_instance().get_chat("dasha", "asakura"))  # Сделал!
     # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))  # Сделал!
     # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
+    # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
 
 
 if __name__ == '__main__':
