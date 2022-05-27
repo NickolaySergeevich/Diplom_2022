@@ -9,7 +9,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Entry x:Name="entry_login" Placeholder="Ник участника"></Entry>
+            <Entry x:Name="entry_login" Placeholder="Ник участника" MaxLength="256"></Entry>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

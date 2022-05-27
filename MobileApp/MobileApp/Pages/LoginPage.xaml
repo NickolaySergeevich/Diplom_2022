@@ -13,7 +13,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" />
+        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" MaxLength="256" />
         <Entry x:Name="entry_password" IsPassword="True" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Placeholder="Пароль" />
 
         <Button x:Name="button_login" Grid.Row="2" Grid.Column="0" Text="Войти" Clicked="Button_login_Clicked" />
