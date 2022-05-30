@@ -248,25 +248,25 @@ class DBHelper:
         return True
 
     @staticmethod
-    def sign_up_to_task(users_id: tuple, tasks_id: int) -> bool:
+    def sign_up_to_task(users_id: tuple, task_id: int) -> bool:
         """
         Записывает участников на конкурс
 
         :param users_id: Кортеж пользовательских id
-        :param tasks_id: ID конкурса
+        :param task_id: ID конкурса
 
         :return: Успешно ли
         """
 
         try:
             for user_id in users_id:
-                query = f"insert into users_to_task (user_id, task_id) values ({user_id}, {tasks_id})"
+                query = f"insert into users_to_task (user_id, task_id) values ({user_id}, {task_id})"
                 DBHelper.get_instance().__cursor.execute(query)
         except mysql.connector.errors.IntegrityError:
             DBHelper.get_instance().__connection.rollback()
             return False
 
-        query = f"update tasks set teams_exist = teams_exist + 1 where id = {tasks_id}"
+        query = f"update tasks set teams_exist = teams_exist + 1 where id = {task_id}"
         DBHelper.get_instance().__cursor.execute(query)
 
         DBHelper.get_instance().__connection.commit()
