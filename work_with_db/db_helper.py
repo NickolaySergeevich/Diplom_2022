@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 from typing import Optional
 
 import mysql.connector
@@ -60,53 +59,6 @@ class DBHelper:
         DBHelper.get_instance().__connection.close()
 
     @staticmethod
-    def __select_from_users(what_need: tuple) -> tuple:
-        """
-        Делает запрос к таблице пользователей
-
-        :param what_need: Какие столбцы нужны
-
-        :return: Кортеж с ответом сервера
-        """
-
-        DBHelper.get_instance().__cursor.execute(
-            ("select " + "{}, " * (len(what_need) - 1) + "{} from users").format(*what_need)
-        )
-
-        answer_list = list()
-        for elem in DBHelper.get_instance().__cursor.fetchall():
-            answer_list.append(dict([(what_need[i], elem[i]) for i in range(len(what_need))]))
-
-        return tuple(answer_list)
-
-    @staticmethod
-    def get_users() -> tuple:
-        """
-        Возвращает кортеж всех пользователей\n
-        (
-            {
-                "username": str,\n
-                "password": str
-            }
-        )
-
-        :return: Кортеж с пользователями
-        """
-
-        return DBHelper.get_instance().__select_from_users(("username", "password"))
-
-    @staticmethod
-    def get_users_name() -> tuple:
-        """
-        Возвращает кортеж имён всех пользователей\n
-        ({"username": str})
-
-        :return: Кортеж с именами пользователей
-        """
-
-        return DBHelper.get_instance().__select_from_users(("username",))
-
-    @staticmethod
     def get_user_id(username: str) -> Optional[int]:
         """
         Получение id пользователя по логину
@@ -128,20 +80,30 @@ class DBHelper:
             return None
 
     @staticmethod
+    def get_nast_id(username: str) -> Optional[int]:
+        """
+        Получить id наставника
+
+        :param username: Имя наставника
+
+        :return: ID наставника или None
+        """
+
+        try:
+            query = f"select id from users where username = '{username}' and users_role_id = 2"
+            DBHelper.get_instance().__cursor.execute(query)
+            data = DBHelper.get_instance().__cursor.fetchall()
+            if len(data) == 0:
+                return None
+            else:
+                return data[0][0]
+        except mysql.connector.errors.IntegrityError:
+            return None
+
+    @staticmethod
     def get_tasks() -> tuple:
         """
-        Получение списка задач\n
-        (
-            {
-                "name": str,\n
-                "organization": str,\n
-                "description": str,\n
-                "teams_count": int or Null,\n
-                "region": str or Null,\n
-                "essay": bool or Null,\n
-                "test": bool or Null
-            }
-        )
+        Получение списка задач
 
         :return: Кортеж с задачами
         """
@@ -169,7 +131,7 @@ class DBHelper:
         :return: Кортеж с задачами
         """
 
-        query = f"select tasks.id, tasks.name, tasks.organization " \
+        query = f"select tasks.id, tasks.name, tasks.organization, users_to_task.name, users_to_task.is_team_lead " \
                 f"from tasks " \
                 f"left join users_to_task " \
                 f"on tasks.id = users_to_task.task_id " \
@@ -178,24 +140,18 @@ class DBHelper:
 
         answer_list = list()
         for elem in DBHelper.get_instance().__cursor.fetchall():
-            answer_list.append({"id": elem[0], "name": elem[1], "organization": elem[2]})
+            answer_list.append({"id": elem[0], "name": elem[1], "organization": elem[2], "command_name": elem[3],
+                                "is_team_lead": elem[4]})
 
         return tuple(answer_list)
 
     @staticmethod
     def get_chat(username_from: str, username_to: str) -> tuple:
         """
-        Получение чата для конкретного пользователя\n
-        (
-            {
-                "mine": bool,\n
-                "text": str,\n
-                "date": datetime.datetime
-            }
-        )
+        Получение чата для конкретного пользователя
 
-        :param username_from: Имя пользователя, от которого пришли сообщения
-        :param username_to: Имя пользователя, которому пришли сообщения
+        :param username_from: Имя пользователя, от которого пришли сообщения.
+        :param username_to: Имя пользователя, которому пришли сообщения.
 
         :return: Кортеж диалога
         """
@@ -227,78 +183,231 @@ class DBHelper:
         return tuple(answer_list)
 
     @staticmethod
-    def login_in(username: str, password: str, is_mdfive: bool = True) -> Optional[dict]:
+    def login_in(username: str, password: str) -> Optional[dict]:
         """
         Вход пользователя
 
         :param username: Логин пользователя
         :param password: Пароль пользователя
-        :param is_mdfive: Хеширован ли пароль
 
         :return: Словарь с информацией или None
         """
 
-        if not is_mdfive:
-            password = hashlib.md5(password.encode("utf-8")).hexdigest()
-
-        what_need = ("users.id", "users_info.name", "users_info.surname", "users.username", "users.password")
-        query = ("select " + "{}, " * (len(what_need) - 1) + "{} " +
-                 "from users_info " +
-                 "left join users " +
-                 "on users_info.user_id = users.id " +
-                 "where users.username = '{}' and users.password = '{}'").format(*what_need, username, password)
-
+        query = f"select id, users_role_id from users where username = '{username}' and password = '{password}'"
         DBHelper.get_instance().__cursor.execute(query)
-        answer_from_db = DBHelper.get_instance().__cursor.fetchall()
-        if len(answer_from_db) != 0:
-            return dict([(what_need[i].split('.')[1], answer_from_db[0][i]) for i in range(len(what_need))])
-        else:
+
+        data = DBHelper.get_instance().__cursor.fetchall()
+        if len(data) == 0:
             return None
+        else:
+            return {"id": data[0][0], "users_role_id": data[0][1]}
 
     @staticmethod
-    def registration(username: str, password: str, name: str, surname: str, is_mdfive: bool = True) -> bool:
+    def registration_expert(username: str, password: str, name: str, surname: str, patronymic: str, email: str,
+                            phone_number: str, organization: str, city: str) -> bool:
         """
-        Регистрация пользователя
+        Регистрация эксперта
 
         :param username: Логин пользователя
         :param password: Пароль пользователя
         :param name: Имя пользователя
         :param surname: Фамилия пользователя
-        :param is_mdfive: Хеширован ли пароль
+        :param patronymic: Отчество пользователя
+        :param email: Почта пользователя
+        :param phone_number: Телефон пользователя
+        :param organization: Организация пользователя
+        :param city: Город пользователя
 
         :return: Успешно ли
         """
 
-        if not is_mdfive:
-            password = hashlib.md5(password.encode("utf-8")).hexdigest()
-
         try:
-            what_need = ("username", "password")
-            query = ("insert into users (" + "{}, " * (len(what_need) - 1) + "{}) " +
-                     "values (" + "'{}', " * (len(what_need) - 1) + "'{}')").format(*what_need, username, password)
+            query = f"insert into users(username, password, users_role_id) values('{username}', '{password}', {5})"
             DBHelper.get_instance().__cursor.execute(query)
-
-            what_need = ("user_id", "name", "surname")
-            new_user_id = DBHelper.get_instance().__cursor.lastrowid
-            query = ("insert into users_info (" + "{}, " * (len(what_need) - 1) + "{})" +
-                     "values ({}, " + "'{}', " * (len(what_need) - 2) + "'{}')").format(*what_need,
-                                                                                        new_user_id,
-                                                                                        name, surname)
-            DBHelper.get_instance().__cursor.execute(query)
-
-            DBHelper.get_instance().__connection.commit()
         except mysql.connector.errors.IntegrityError:
             return False
 
+        try:
+            query = f"insert into experts_info " \
+                    f"(user_id, name, surname, patronymic, email, phone_number, organization, city) " \
+                    f"values " \
+                    f"({DBHelper.get_instance().__cursor.lastrowid}, '{name}', '{surname}', '{patronymic}', " \
+                    f"'{email}', '{phone_number}', '{organization}', '{city}')"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
         return True
 
     @staticmethod
-    def sign_up_to_task(users_id: tuple, task_id: int) -> bool:
+    def registration_org(username: str, password: str, name: str, surname: str, patronymic: str, email: str) -> bool:
+        """
+        Регистрация оргкомитета
+
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param email: Почта пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"insert into users(username, password, users_role_id) values('{username}', '{password}', {3})"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"insert into organizing_committee_info " \
+                    f"(user_id, name, surname, patronymic, email) " \
+                    f"values ({DBHelper.get_instance().__cursor.lastrowid}, '{name}', '{surname}', " \
+                    f"'{patronymic}', '{email}')"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
+    def registration_partners(username: str, password: str, name: str, surname: str, patronymic: str, email: str,
+                              phone_number: str, organization: str, city: str) -> bool:
+        """
+        Регистрация партнёра
+
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param email: Почта пользователя
+        :param phone_number: Телефон пользователя
+        :param organization: Организация пользователя
+        :param city: Город пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"insert into users(username, password, users_role_id) values('{username}', '{password}', {4})"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"insert into partners_info " \
+                    f"(user_id, name, surname, patronymic, email, phone_number, organization, city) " \
+                    f"values " \
+                    f"({DBHelper.get_instance().__cursor.lastrowid}, '{name}', '{surname}', '{patronymic}', " \
+                    f"'{email}', '{phone_number}', '{organization}', '{city}')"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
+    def registration_users(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
+                           city: str, educational_institution: str, class_number: int, email: str,
+                           phone_number: str) -> bool:
+        """
+        Регистрация участника
+
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param country: Страна пользователя
+        :param city: Город пользователя
+        :param educational_institution: Место обучения пользователя
+        :param class_number: Номер класса пользователя
+        :param email: Почта пользователя
+        :param phone_number: Телефон пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"insert into users(username, password, users_role_id) values('{username}', '{password}', {1})"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"insert into users_info " \
+                    f"(user_id, name, surname, patronymic, country, city, educational_institution, class, " \
+                    f"email, phone_number) " \
+                    f"values " \
+                    f"({DBHelper.get_instance().__cursor.lastrowid}, '{name}', '{surname}', '{patronymic}', " \
+                    f"'{country}', '{city}', '{educational_institution}', {class_number}, '{email}', '{phone_number}')"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
+    def registration_nast(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
+                          city: str, educational_institution: str, email: str, phone_number: str) -> bool:
+        """
+        Регистрация наставника
+
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param country: Страна пользователя
+        :param city: Город пользователя
+        :param educational_institution: Место обучения пользователя
+        :param email: Почта пользователя
+        :param phone_number: Телефон пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"insert into users(username, password, users_role_id) values('{username}', '{password}', {2})"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"insert into users_info " \
+                    f"(user_id, name, surname, patronymic, country, city, educational_institution, class, " \
+                    f"email, phone_number) " \
+                    f"values " \
+                    f"({DBHelper.get_instance().__cursor.lastrowid}, '{name}', '{surname}', '{patronymic}', " \
+                    f"'{country}', '{city}', '{educational_institution}', -1, '{email}', '{phone_number}')"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
+    def sign_up_to_task(users_id: tuple, task_id: int, nast_id: int, command_name: str, is_team_lead_id: int) -> bool:
         """
         Записывает участников на конкурс
 
         :param users_id: Кортеж пользовательских id
         :param task_id: ID конкурса
+        :param nast_id: ID наставника
+        :param command_name: Название команды
+        :param is_team_lead_id: Кто тимлидер
 
         :return: Успешно ли
         """
@@ -314,7 +423,12 @@ class DBHelper:
 
         try:
             for user_id in users_id:
-                query = f"insert into users_to_task (user_id, task_id) values ({user_id}, {task_id})"
+                if user_id == is_team_lead_id:
+                    query = f"insert into users_to_task (user_id, task_id, nast_id, name, is_team_lead) " \
+                            f"values ({user_id}, {task_id}, {nast_id}, '{command_name}', 1)"
+                else:
+                    query = f"insert into users_to_task (user_id, task_id, nast_id, name, is_team_lead) " \
+                            f"values ({user_id}, {task_id}, {nast_id}, '{command_name}', 0)"
                 DBHelper.get_instance().__cursor.execute(query)
         except mysql.connector.errors.IntegrityError:
             DBHelper.get_instance().__connection.rollback()
@@ -328,19 +442,18 @@ class DBHelper:
         return True
 
     @staticmethod
-    def remove_from_task(users_id: tuple, task_id: int) -> bool:
+    def remove_from_task(task_id: int, command_name: str) -> bool:
         """
         Удаляет команду с конкурса
 
-        :param users_id: Кортеж пользовательских id
         :param task_id: ID конкурса
+        :param command_name: Название команды
 
         :return: Успешно ли
         """
 
-        for user_id in users_id:
-            query = f"delete from users_to_task where user_id = {user_id}"
-            DBHelper.get_instance().__cursor.execute(query)
+        query = f"delete from users_to_task where name = '{command_name}'"
+        DBHelper.get_instance().__cursor.execute(query)
         if DBHelper.get_instance().__cursor.rowcount == 0:
             return False
 
@@ -381,16 +494,27 @@ def main() -> None:
 
     # DBHelper.settings_file = "help_files/database_settings.dk"
 
-    # print(DBHelper.get_instance().get_users())  # Сделал!
-    # print(DBHelper.get_instance().get_users_name())  # Сделал!
-    # print(DBHelper.get_instance().get_tasks())  # Сделал!
-    # print(DBHelper.get_instance().get_chat("dasha", "asakura"))  # Сделал!
-    # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))  # Сделал!
-    # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
-    # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
-    # print(DBHelper.get_instance().remove_from_task((1, 2), 1))  # Сделал!
-    # print(DBHelper.get_instance().get_user_id("baba"))  # Сделал!
-    # print(DBHelper.get_instance().get_tasks_by_user(1))  # Сделал!
+    # print(DBHelper.get_instance().get_user_id("asakura"))
+    # print(DBHelper.get_instance().get_nast_id("asakuraBig"))
+    # print(DBHelper.get_instance().get_tasks())
+    # print(DBHelper.get_instance().get_tasks_by_user(14))
+    # print(DBHelper.get_instance().get_chat("asakura", "dasha"))
+    # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))
+    # print(DBHelper.get_instance().registration_expert("testExpert", "78e5233d20f3608ebc410ee2c18a41da", "Test",
+    #                                                   "Test", "Test", "test@gmail.com", "11111111111",
+    #                                                   "Test", "Test"))
+    # print(DBHelper.get_instance().registration_org("TestOrg", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
+    #                                                "Test", "test@gmail.com"))
+    # print(DBHelper.get_instance().registration_partners("testPartner", "78e5233d20f3608ebc410ee2c18a41da", "Test",
+    #                                                     "Test", "Test", "test@gamil.com", "11111111111", "test",
+    #                                                     "test"))
+    # print(DBHelper.get_instance().registration_users("TestUser", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
+    #                                                  "Test", "Test", "Test", "Test", 5, "test@gamil.com",
+    #                                                  "11111111111"))
+    # print(DBHelper.get_instance().registration_nast("TestNast", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
+    #                                                 "Test", "Test", "test", "Test", "test@ya.ru", "22222222222"))
+    # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
+    # print(DBHelper.get_instance().remove_from_task(5, "Test"))
 
 
 if __name__ == '__main__':
