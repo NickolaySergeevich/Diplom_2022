@@ -160,6 +160,29 @@ class DBHelper:
         return tuple(answer_list)
 
     @staticmethod
+    def get_tasks_by_user(user_id: int) -> tuple:
+        """
+        Получение списка задач для пользователя
+
+        :param user_id: ID пользователя
+
+        :return: Кортеж с задачами
+        """
+
+        query = f"select tasks.id, tasks.name, tasks.organization " \
+                f"from tasks " \
+                f"left join users_to_task " \
+                f"on tasks.id = users_to_task.task_id " \
+                f"where users_to_task.user_id = {user_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        answer_list = list()
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            answer_list.append({"id": elem[0], "name": elem[1], "organization": elem[2]})
+
+            return tuple(answer_list)
+
+    @staticmethod
     def get_chat(username_from: str, username_to: str) -> tuple:
         """
         Получение чата для конкретного пользователя\n
@@ -366,7 +389,8 @@ def main() -> None:
     # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
     # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
     # print(DBHelper.get_instance().remove_from_task((1, 2), 1))  # Сделал!
-    # print(DBHelper.get_instance().get_user_id("baba")) Сделал!
+    # print(DBHelper.get_instance().get_user_id("baba"))  # Сделал!
+    # print(DBHelper.get_instance().get_tasks_by_user(1))  # Сделал!
 
 
 if __name__ == '__main__':

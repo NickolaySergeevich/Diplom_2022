@@ -941,6 +941,7 @@ obj/
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,python,flask,csharp,xamarinstudio,visualstudio,venv
 /.idea/
+/.idea/httpRequests/http-requests-log.http
 /api_flask/.idea
 /api_flask/help_files
 /work_with_db/help_files/database_settings.dk
