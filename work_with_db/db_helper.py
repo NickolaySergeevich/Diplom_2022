@@ -180,7 +180,7 @@ class DBHelper:
         for elem in DBHelper.get_instance().__cursor.fetchall():
             answer_list.append({"id": elem[0], "name": elem[1], "organization": elem[2]})
 
-            return tuple(answer_list)
+        return tuple(answer_list)
 
     @staticmethod
     def get_chat(username_from: str, username_to: str) -> tuple:
