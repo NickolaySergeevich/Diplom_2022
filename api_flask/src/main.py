@@ -45,6 +45,25 @@ def get_users() -> Response:
     return jsonify(DBHelper.get_instance().get_users_name())
 
 
+@application.route("/api/get_user_by_name/", methods=["GET"])
+def get_user_by_name() -> Response:
+    """
+    Получение id пользователя по имени
+
+    :return: json с id пользователя или ошибка
+    """
+
+    data = get_data_from_args(("username",), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    answer_from_db = DBHelper.get_instance().get_user_id(**data)
+    if answer_from_db is not None:
+        return jsonify(answer_from_db)
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
+
+
 @application.route("/api/login/", methods=["GET"])
 def login() -> Response:
     """
