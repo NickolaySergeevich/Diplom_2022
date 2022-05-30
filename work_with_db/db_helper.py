@@ -315,9 +315,9 @@ class DBHelper:
         return True
 
     @staticmethod
-    def registration_users(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
-                           city: str, educational_institution: str, class_number: int, email: str,
-                           phone_number: str) -> bool:
+    def registration_user(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
+                          city: str, educational_institution: str, class_number: int, email: str,
+                          phone_number: str) -> bool:
         """
         Регистрация участника
 
@@ -508,9 +508,9 @@ def main() -> None:
     # print(DBHelper.get_instance().registration_partners("testPartner", "78e5233d20f3608ebc410ee2c18a41da", "Test",
     #                                                     "Test", "Test", "test@gamil.com", "11111111111", "test",
     #                                                     "test"))
-    # print(DBHelper.get_instance().registration_users("TestUser", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
-    #                                                  "Test", "Test", "Test", "Test", 5, "test@gamil.com",
-    #                                                  "11111111111"))
+    # print(DBHelper.get_instance().registration_user("TestUser", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
+    #                                                 "Test", "Test", "Test", "Test", 5, "test@gamil.com",
+    #                                                 "11111111111"))
     # print(DBHelper.get_instance().registration_nast("TestNast", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
     #                                                 "Test", "Test", "test", "Test", "test@ya.ru", "22222222222"))
     # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
