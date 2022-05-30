@@ -4,6 +4,8 @@ namespace MobileApp.ApiJsonResponse
 {
     public class TasksResponse
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("organization")]
