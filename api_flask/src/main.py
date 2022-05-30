@@ -109,6 +109,21 @@ def registration() -> Response:
     return jsonify({"status": DBHelper.get_instance().registration(**data)})
 
 
+@application.route("/api/tasks/sign_up_to_task/", methods=["POST"])
+def sign_up_to_task() -> Response:
+    """
+    Регистрация на конкурс
+
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
+
+    data = get_data_from_json(("users_id", "task_id"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().sign_up_to_task(**data)})
+
+
 def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
     """
     Получение данных из json
