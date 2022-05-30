@@ -12,8 +12,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label x:Name="label_taskName" FontSize="Medium"></Label>
-        <Label x:Name="label_taskOrganization" Grid.Row="1" FontSize="Small"></Label>
+        <Label x:Name="label_taskName" FontSize="Medium" Text="Название конкурса"></Label>
+        <Label x:Name="label_taskOrganization" Grid.Row="1" FontSize="Small" Text="Название организации"></Label>
 
         <Grid Grid.Row="2" Margin="5">
             <Grid.RowDefinitions>

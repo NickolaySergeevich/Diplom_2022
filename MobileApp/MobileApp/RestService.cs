@@ -89,5 +89,31 @@ namespace MobileApp
 
             return registrationResponse;
         }
+
+        public async Task<SignUpToTaskResponse> GetSignUpToTaskResponseAsync(string url,
+            SignUpToTaskRequest requestData)
+        {
+            SignUpToTaskResponse signUpToTaskResponse = null;
+
+            var postData = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8,
+                "application/json");
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, postData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    signUpToTaskResponse = JsonConvert.DeserializeObject<SignUpToTaskResponse>(content);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("\tERROR {0}", exception.Message);
+            }
+
+            return signUpToTaskResponse;
+        }
     }
 }
