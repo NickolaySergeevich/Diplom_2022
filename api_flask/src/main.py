@@ -106,7 +106,7 @@ def get_chat() -> Response:
     :return: Json с чатом
     """
 
-    data = get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+    data = get_data_from_args(("user_from", "user_to", "password"), request.args)
     if data is None:
         return jsonify({"status": NO_DATA})
 
@@ -185,19 +185,36 @@ def registration_partners() -> Response:
     return jsonify({"status": DBHelper.get_instance().registration_partners(**data)})
 
 
-@application.route("/api/registration/", methods=["POST"])
-def registration() -> Response:
+@application.route("/api/registration_user/", methods=["POST"])
+def registration_user() -> Response:
     """
     Регистрация нового пользователя
 
     :return: Json с информацией о том, успешно ли всё прошло
     """
 
-    data = get_data_from_json(("username", "password", "name", "surname"), request.get_json())
+    data = get_data_from_json(("username", "password", "name", "surname", "patronymic", "country", "city",
+                               "educational_institution", "class_number", "email", "phone_number"), request.get_json())
     if data is None:
         return jsonify({"status": NO_DATA})
 
-    return jsonify({"status": DBHelper.get_instance().registration(**data)})
+    return jsonify({"status": DBHelper.get_instance().registration_user(**data)})
+
+
+@application.route("/api/registration_nast/", methods=["POST"])
+def registration_nast() -> Response:
+    """
+    Регистрация нового наставника
+
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
+
+    data = get_data_from_json(("username", "password", "name", "surname", "patronymic", "country", "city",
+                               "educational_institution", "email", "phone_number"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().registration_nast(**data)})
 
 
 @application.route("/api/tasks/sign_up_to_task/", methods=["POST"])
@@ -208,7 +225,7 @@ def sign_up_to_task() -> Response:
     :return: Json с информацией о том, успешно ли всё прошло
     """
 
-    data = get_data_from_json(("users_id", "task_id"), request.get_json())
+    data = get_data_from_json(("users_id", "task_id", "nast_id", "command_name", "is_team_lead_id"), request.get_json())
     if data is None:
         return jsonify({"status": NO_DATA})
 
@@ -223,7 +240,7 @@ def remove_from_task() -> Response:
     :return: Json с информацией о том, успешно ли всё прошло
     """
 
-    data = get_data_from_json(("users_id", "task_id"), request.get_json())
+    data = get_data_from_json(("task_id", "command_name"), request.get_json())
     if data is None:
         return jsonify({"status": NO_DATA})
 
