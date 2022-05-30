@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace MobileApp.ViewCells
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class GroupCell : ViewCell
+    public partial class TeamMemberCell : ViewCell
     {
-        public GroupCell()
+        public TeamMemberCell()
         {
             InitializeComponent();
         }

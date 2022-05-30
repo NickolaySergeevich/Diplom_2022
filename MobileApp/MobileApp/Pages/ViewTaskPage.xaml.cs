@@ -52,7 +52,7 @@ namespace MobileApp.Pages
 
         private void Button_insert_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new SignUpToTaskPage();
+            Application.Current.MainPage = new SignUpToTaskPage(_tasksResponse, _loginResponse);
         }
 
         private void Button_exit_OnClicked(object sender, EventArgs e)

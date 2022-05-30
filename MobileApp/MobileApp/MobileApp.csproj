@@ -44,7 +44,7 @@
     <EmbeddedResource Update="Pages\ViewTaskPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewCells\GroupCell.xaml">
+    <EmbeddedResource Update="ViewCells\TeamMemberCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

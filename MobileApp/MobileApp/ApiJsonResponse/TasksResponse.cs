@@ -12,6 +12,8 @@ namespace MobileApp.ApiJsonResponse
         public string Description { get; set; }
         [JsonProperty("teams_count")]
         public int TeamsCount { get; set; }
+        [JsonProperty("team_member_max")]
+        public int TeamMemberMax { get; set; }
         [JsonProperty("region")]
         public string Region { get; set; }
         [JsonProperty("essay")]

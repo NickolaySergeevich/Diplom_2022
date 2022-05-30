@@ -25,7 +25,7 @@
             <ListView x:Name="listView_group" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <viewCells:GroupCell></viewCells:GroupCell>
+                        <viewCells:TeamMemberCell></viewCells:TeamMemberCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -38,7 +38,7 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="button_signUp" Text="Записаться"></Button>
-            <Button x:Name="button_exit" Grid.Column="1" Text="Выход"></Button>
+            <Button x:Name="button_exit" Grid.Column="1" Text="Выход" Clicked="Button_exit_OnClicked"></Button>
         </Grid>
     </Grid>
 </ContentPage>
