@@ -35,12 +35,21 @@ namespace MobileApp.Pages
             listView_groups.ItemsSource = TasksByUser;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
+        {
+            UpdateTasks();
+            UpdateUserTasks();
+        }
+
+        private async void UpdateTasks()
         {
             var tasks = await _restService.GetTasksResponseAsync(Constants.TasksAddress);
             foreach (var task in tasks)
                 Tasks.Add(task);
+        }
 
+        private async void UpdateUserTasks()
+        {
             var tasksByUser =
                 await _restService.GetTasksResponseAsync(Constants.TasksByUserAddress + "?user_id=" +
                                                          _loginResponse.Id);
@@ -56,7 +65,13 @@ namespace MobileApp.Pages
         private void Button_reloadListTasks_OnClicked(object sender, EventArgs e)
         {
             Tasks.Clear();
-            OnAppearing();
+            UpdateTasks();
+        }
+
+        private void Button_updateUserTasks_OnClicked(object sender, EventArgs e)
+        {
+            TasksByUser.Clear();
+            UpdateUserTasks();
         }
     }
 }

@@ -65,7 +65,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
-            <Button x:Name="button_updateUserTasks" Grid.Row="4" Text="Обновить список своих проектов"></Button>
+            <Button x:Name="button_updateUserTasks" Grid.Row="4" Text="Обновить список своих проектов" Clicked="Button_updateUserTasks_OnClicked"></Button>
         </Grid>
     </ContentPage>
 </TabbedPage>
