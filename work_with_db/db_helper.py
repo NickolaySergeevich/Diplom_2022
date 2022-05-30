@@ -107,6 +107,27 @@ class DBHelper:
         return DBHelper.get_instance().__select_from_users(("username",))
 
     @staticmethod
+    def get_user_id(username: str) -> Optional[int]:
+        """
+        Получение id пользователя по логину
+
+        :param username: Имя пользователя
+
+        :return: ID пользователя или None
+        """
+
+        try:
+            query = f"select id from users where username = '{username}'"
+            DBHelper.get_instance().__cursor.execute(query)
+            data = DBHelper.get_instance().__cursor.fetchall()
+            if len(data) == 0:
+                return None
+            else:
+                return data[0][0]
+        except mysql.connector.errors.IntegrityError:
+            return None
+
+    @staticmethod
     def get_tasks() -> tuple:
         """
         Получение списка задач\n
@@ -125,7 +146,8 @@ class DBHelper:
         :return: Кортеж с задачами
         """
 
-        what_need = ("id", "name", "organization", "description", "teams_count", "region", "essay", "test")
+        what_need = (
+            "id", "name", "organization", "description", "teams_count", "team_member_max", "region", "essay", "test")
 
         DBHelper.get_instance().__cursor.execute(
             ("select " + "{}, " * (len(what_need) - 1) + "{} from tasks").format(*what_need)
@@ -259,6 +281,15 @@ class DBHelper:
         """
 
         try:
+            query = f"select teams_count, teams_exist from tasks where id={task_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+            data = DBHelper.get_instance().__cursor.fetchall()
+            if data[0][0] == data[0][1]:
+                return False
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
             for user_id in users_id:
                 query = f"insert into users_to_task (user_id, task_id) values ({user_id}, {task_id})"
                 DBHelper.get_instance().__cursor.execute(query)
@@ -335,6 +366,7 @@ def main() -> None:
     # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
     # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
     # print(DBHelper.get_instance().remove_from_task((1, 2), 1))  # Сделал!
+    # print(DBHelper.get_instance().get_user_id("baba")) Сделал!
 
 
 if __name__ == '__main__':
