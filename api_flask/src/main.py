@@ -64,6 +64,21 @@ def get_user_by_name() -> Response:
         return jsonify({"status": NO_DATA_IN_DB})
 
 
+@application.route("/api/get_tasks_by_user/", methods=["GET"])
+def get_tasks_by_user() -> Response:
+    """
+    Получение списка задач для конкретного пользователя
+
+    :return: json со списком задач
+    """
+
+    data = get_data_from_args(("user_id",), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify(DBHelper.get_instance().get_tasks_by_user(**data))
+
+
 @application.route("/api/login/", methods=["GET"])
 def login() -> Response:
     """
