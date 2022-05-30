@@ -107,6 +107,27 @@ class DBHelper:
         return DBHelper.get_instance().__select_from_users(("username",))
 
     @staticmethod
+    def get_user_id(username: str) -> Optional[int]:
+        """
+        Получение id пользователя по логину
+
+        :param username: Имя пользователя
+
+        :return: ID пользователя или None
+        """
+
+        try:
+            query = f"select id from users where username = '{username}'"
+            DBHelper.get_instance().__cursor.execute(query)
+            data = DBHelper.get_instance().__cursor.fetchall()
+            if len(data) == 0:
+                return None
+            else:
+                return data[0][0]
+        except mysql.connector.errors.IntegrityError:
+            return None
+
+    @staticmethod
     def get_tasks() -> tuple:
         """
         Получение списка задач\n
@@ -345,6 +366,7 @@ def main() -> None:
     # print(DBHelper.get_instance().registration("NS", "2545", "Nickolay", "Alekseev"))  # Сделал!
     # print(DBHelper.get_instance().sign_up_to_task((1, 2), 1))  # Сделал!
     # print(DBHelper.get_instance().remove_from_task((1, 2), 1))  # Сделал!
+    # print(DBHelper.get_instance().get_user_id("baba")) Сделал!
 
 
 if __name__ == '__main__':
