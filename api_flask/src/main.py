@@ -124,6 +124,21 @@ def sign_up_to_task() -> Response:
     return jsonify({"status": DBHelper.get_instance().sign_up_to_task(**data)})
 
 
+@application.route("/api/tasks/remove_from_task/", methods=["POST"])
+def remove_from_task() -> Response:
+    """
+    Удаление с конкурса
+
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
+
+    data = get_data_from_json(("users_id", "task_id"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().remove_from_task(**data)})
+
+
 def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
     """
     Получение данных из json
