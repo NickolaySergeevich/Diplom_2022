@@ -41,7 +41,11 @@ namespace MobileApp.Pages
             foreach (var task in tasks)
                 Tasks.Add(task);
 
-            // var tasksByUser = await _restService.GetTasksResponseAsync(Constants.TasksByUserAddress + "?user_id=" + _loginResponse.)
+            var tasksByUser =
+                await _restService.GetTasksResponseAsync(Constants.TasksByUserAddress + "?user_id=" +
+                                                         _loginResponse.Id);
+            foreach (var task in tasksByUser)
+                TasksByUser.Add(task);
         }
 
         private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)
