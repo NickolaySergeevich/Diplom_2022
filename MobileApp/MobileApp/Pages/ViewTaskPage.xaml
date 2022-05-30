@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:ViewTaskPage"
+             x:Class="MobileApp.Pages.ViewTaskPage">
+    <Grid HorizontalOptions="Start" VerticalOptions="Start" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="label_name" FontSize="Large"></Label>
+        <Label x:Name="label_organization" Grid.Row="1" FontSize="Small"></Label>
+        <Label x:Name="label_description" Grid.Row="2" FontSize="Medium"></Label>
+        <Label x:Name="label_region" Grid.Row="3" FontSize="Medium"></Label>
+
+        <Grid Grid.Row="4" HorizontalOptions="Start" VerticalOptions="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="label_teamsCount" FontSize="Small"></Label>
+            <Label x:Name="label_isEssay" Grid.Column="1" FontSize="Small"></Label>
+            <Label x:Name="label_isTest" Grid.Column="2" FontSize="Small"></Label>
+        </Grid>
+
+        <Grid Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="button_insert" Text="Записаться" Margin="5" Clicked="Button_insert_OnClicked"></Button>
+            <Button x:Name="button_exit" Grid.Column="1" Text="Назад" Margin="5" Clicked="Button_exit_OnClicked"></Button>
+        </Grid>
+    </Grid>
+</ContentPage>

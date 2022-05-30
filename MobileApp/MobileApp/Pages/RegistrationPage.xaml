@@ -15,10 +15,10 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин"></Entry>
+        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" MaxLength="256"></Entry>
         <Entry x:Name="entry_password" IsPassword="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Пароль"></Entry>
-        <Entry x:Name="entry_name" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Имя"></Entry>
-        <Entry x:Name="entry_surname" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Фамилия"></Entry>
+        <Entry x:Name="entry_name" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Имя" MaxLength="256"></Entry>
+        <Entry x:Name="entry_surname" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Фамилия" MaxLength="256"></Entry>
 
         <Button x:Name="button_registration" Grid.Row="4" Grid.Column="0" Text="Зарегистрироваться" Clicked="Button_registration_OnClicked"></Button>
         <Button x:Name="button_exit" Grid.Row="4" Grid.Column="1" Text="Вернуться" Clicked="Button_exit_OnClicked"></Button>

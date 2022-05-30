@@ -37,12 +37,12 @@ namespace MobileApp.Pages
             {
                 case Constants.ServerError:
                     await DisplayAlert("Ooops", "С сервером что-то не так. Обратитесь к системному администратору.", "OK");
-                    return;
+                    break;
                 case Constants.NoDataInDb:
                     await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пройдите регистрацию.", "OK");
-                    return;
+                    break;
                 default:
-                    Application.Current.MainPage = new MainUserPage();
+                    Application.Current.MainPage = new MainUserPage(response);
                     break;
             }
 
