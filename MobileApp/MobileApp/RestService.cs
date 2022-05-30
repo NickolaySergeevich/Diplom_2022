@@ -65,6 +65,28 @@ namespace MobileApp
             return tasks;
         }
 
+        public async Task<UserIdResponse> GetUserIdResponseAsync(string url)
+        {
+            UserIdResponse userId = null;
+
+            try
+            {
+                var response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    userId = JsonConvert.DeserializeObject<UserIdResponse>(content);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("\tERROR {0}", exception.Message);
+            }
+
+            return userId;
+        }
+
         public async Task<RegistrationResponse> GetRegistrationResponseAsync(string url,
             RegistrationRequest requestData)
         {

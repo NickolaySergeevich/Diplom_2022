@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -13,6 +14,8 @@ namespace MobileApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SignUpToTaskPage
     {
+        private readonly RestService _restService;
+
         private readonly TasksResponse _tasksResponse;
         private readonly LoginResponse _loginResponse;
 
@@ -22,6 +25,8 @@ namespace MobileApp.Pages
         public SignUpToTaskPage(TasksResponse tasksResponse, LoginResponse loginResponse)
         {
             InitializeComponent();
+
+            _restService = new RestService();
 
             _tasksResponse = tasksResponse;
             _loginResponse = loginResponse;
@@ -44,6 +49,40 @@ namespace MobileApp.Pages
             }
 
             var members = from member in _members where !string.IsNullOrEmpty(member.Username) select member;
+            var usersId = new List<int>();
+            var error = false;
+            foreach (var member in (from member in _members where !string.IsNullOrEmpty(member.Username) select member))
+            {
+                var response =
+                    await _restService.GetUserIdResponseAsync(Constants.GetUserIdAddress + "?username=" +
+                                                              member.Username);
+                switch (response.Status)
+                {
+                    case Constants.ServerError:
+                        await DisplayAlert("Ooops", "С сервером что-то не так. Обратитесь к системному администратору.", "OK");
+                        error = true;
+                        break;
+                    case Constants.NoDataInDb:
+                        await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пользователь не зарегистрирован.", "OK");
+                        error = true;
+                        break;
+                    default:
+                        usersId.Add(response.Id);
+                        break;
+                }
+
+                if (error)
+                    break;
+            }
+
+            /*if (!error)
+            {
+                var signUpToTask = new SignUpToTaskRequest
+                {
+                    UsersId = usersId,
+                    TaskId = _tasksResponse.
+                }
+            }*/
         }
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
