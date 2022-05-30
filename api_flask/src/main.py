@@ -34,17 +34,6 @@ def start_api_page() -> str:
     return "Hello, World!"
 
 
-@application.route("/api/users/", methods=["GET"])
-def get_users() -> Response:
-    """
-    Получение имён всех пользователей
-
-    :return: json с именами пользователей
-    """
-
-    return jsonify(DBHelper.get_instance().get_users_name())
-
-
 @application.route("/api/get_user_by_name/", methods=["GET"])
 def get_user_by_name() -> Response:
     """
@@ -64,6 +53,36 @@ def get_user_by_name() -> Response:
         return jsonify({"status": NO_DATA_IN_DB})
 
 
+@application.route("/api/get_nast_by_name/", methods=["GET"])
+def get_nast_by_name() -> Response:
+    """
+    Получение id наставника по имени
+
+    :return: json с id пользователя или ошибка
+    """
+
+    data = get_data_from_args(("username",), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    answer_from_db = DBHelper.get_instance().get_nast_id(**data)
+    if answer_from_db is not None:
+        return jsonify({"id": answer_from_db})
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
+
+
+@application.route("/api/tasks/", methods=["GET"])
+def get_tasks() -> Response:
+    """
+    Получение списка задач
+
+    :return: Ответ от сервера или ошибка
+    """
+
+    return jsonify(DBHelper.get_instance().get_tasks())
+
+
 @application.route("/api/get_tasks_by_user/", methods=["GET"])
 def get_tasks_by_user() -> Response:
     """
@@ -77,6 +96,24 @@ def get_tasks_by_user() -> Response:
         return jsonify({"status": NO_DATA})
 
     return jsonify(DBHelper.get_instance().get_tasks_by_user(**data))
+
+
+@application.route("/api/chats/", methods=["GET"])
+def get_chat() -> Response:
+    """
+    Получение чата для пользователей
+
+    :return: Json с чатом
+    """
+
+    data = get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
+        return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
 
 
 @application.route("/api/login/", methods=["GET"])
@@ -99,33 +136,53 @@ def login() -> Response:
         return jsonify({"status": NO_DATA_IN_DB})
 
 
-@application.route("/api/tasks/", methods=["GET"])
-def get_tasks() -> Response:
+@application.route("/api/registration_expert/", methods=["POST"])
+def registration_expert() -> Response:
     """
-    Получение списка задач
+    Регистрация нового эксперта
 
-    :return: Ответ от сервера или ошибка
-    """
-
-    return jsonify(DBHelper.get_instance().get_tasks())
-
-
-@application.route("/api/chats/", methods=["GET"])
-def get_chat() -> Response:
-    """
-    Получение чата для пользователей
-
-    :return: Json с чатом
+    :return: Json с информацией о том, успешно ли всё прошло
     """
 
-    data = get_data_from_json(("user_from", "user_to", "password"), request.get_json())
+    data = get_data_from_json(
+        ("username", "password", "name", "surname", "patronymic", "email", "phone_number", "organization", "city"),
+        request.get_json())
     if data is None:
         return jsonify({"status": NO_DATA})
 
-    if DBHelper.get_instance().login_in(data["user_from"], data["password"]) is not None:
-        return jsonify(DBHelper.get_instance().get_chat(data["user_from"], data["user_to"]))
-    else:
-        return jsonify({"status": NO_DATA_IN_DB})
+    return jsonify({"status": DBHelper.get_instance().registration_expert(**data)})
+
+
+@application.route("/api/registration_org/", methods=["POST"])
+def registration_org() -> Response:
+    """
+    Регистрация нового оргкомитета
+
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
+
+    data = get_data_from_json(("username", "password", "name", "surname", "patronymic", "email"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().registration_org(**data)})
+
+
+@application.route("/api/registration_partners/", methods=["POST"])
+def registration_partners() -> Response:
+    """
+    Регистрация нового партнёра
+
+    :return: Json с информацией о том, успешно ли всё прошло
+    """
+
+    data = get_data_from_json(
+        ("username", "password", "name", "surname", "patronymic", "email", "phone_number", "organization", "city"),
+        request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().registration_partners(**data)})
 
 
 @application.route("/api/registration/", methods=["POST"])
