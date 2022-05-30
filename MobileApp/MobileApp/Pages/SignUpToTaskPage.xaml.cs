@@ -61,11 +61,19 @@ namespace MobileApp.Pages
                 return;
             }
 
+            var memberList = from member in _members where !string.IsNullOrEmpty(member.Username) select member;
+            var members = memberList as TeamMemberCellClass[] ?? memberList.ToArray();
+            if (members.Length < 3)
+            {
+                await DisplayAlert("Внимание", "Минимум три участника!", "OK");
+                return;
+            }
+
             button_signUp.IsEnabled = false;
 
             var usersId = new List<int>();
             var error = false;
-            foreach (var member in (from member in _members where !string.IsNullOrEmpty(member.Username) select member))
+            foreach (var member in members)
             {
                 var response =
                     await _restService.GetUserIdResponseAsync(Constants.GetUserIdAddress + "?username=" +
