@@ -125,7 +125,8 @@ class DBHelper:
         :return: Кортеж с задачами
         """
 
-        what_need = ("id", "name", "organization", "description", "teams_count", "region", "essay", "test")
+        what_need = (
+            "id", "name", "organization", "description", "teams_count", "team_member_max", "region", "essay", "test")
 
         DBHelper.get_instance().__cursor.execute(
             ("select " + "{}, " * (len(what_need) - 1) + "{} from tasks").format(*what_need)
