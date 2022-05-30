@@ -107,14 +107,11 @@ namespace MobileApp.Pages
                         await DisplayAlert("Внимание", "Один из указанных пользователей уже зарегистрирован на конкурс.", "OK");
                         break;
                     default:
-                        foreach (var member in _members)
-                        {
-                            member.Username = string.Empty;
-                            member.IsTeamLead = false;
-                        }
-
                         await DisplayAlert("Успех", "Вы успешно зарегистрированы!", "OK");
-                        break;
+
+                        Application.Current.MainPage = new ViewTaskPage(_tasksResponse, _loginResponse);
+
+                        return;
                 }
             }
 
