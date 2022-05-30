@@ -17,6 +17,9 @@ namespace MobileApp.Pages
         private ObservableCollection<TasksResponse> _tasks;
         public ObservableCollection<TasksResponse> Tasks => _tasks ?? (_tasks = new ObservableCollection<TasksResponse>());
 
+        private ObservableCollection<TasksResponse> _tasksByUser;
+        public ObservableCollection<TasksResponse> TasksByUser => _tasksByUser ?? (_tasksByUser = new ObservableCollection<TasksResponse>());
+
         public MainUserPage(LoginResponse loginResponse)
         {
             InitializeComponent();
@@ -29,6 +32,7 @@ namespace MobileApp.Pages
             label_login.Text = "Логин: " + _loginResponse.Username;
 
             listView_tasks.ItemsSource = Tasks;
+            listView_groups.ItemsSource = TasksByUser;
         }
 
         protected override async void OnAppearing()
@@ -36,6 +40,8 @@ namespace MobileApp.Pages
             var tasks = await _restService.GetTasksResponseAsync(Constants.TasksAddress);
             foreach (var task in tasks)
                 Tasks.Add(task);
+
+            // var tasksByUser = await _restService.GetTasksResponseAsync(Constants.TasksByUserAddress + "?user_id=" + _loginResponse.)
         }
 
         private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)
