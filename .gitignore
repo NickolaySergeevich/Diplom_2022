@@ -940,7 +940,7 @@ obj/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,python,flask,csharp,xamarinstudio,visualstudio,venv
-/.idea
+/.idea/
 /api_flask/.idea
 /api_flask/help_files
 /work_with_db/help_files/database_settings.dk

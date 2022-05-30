@@ -59,7 +59,7 @@ def get_user_by_name() -> Response:
 
     answer_from_db = DBHelper.get_instance().get_user_id(**data)
     if answer_from_db is not None:
-        return jsonify(answer_from_db)
+        return jsonify({"id": answer_from_db})
     else:
         return jsonify({"status": NO_DATA_IN_DB})
 
