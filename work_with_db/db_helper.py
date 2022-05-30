@@ -284,7 +284,7 @@ class DBHelper:
             query = f"select teams_count, teams_exist from tasks where id={task_id}"
             DBHelper.get_instance().__cursor.execute(query)
             data = DBHelper.get_instance().__cursor.fetchall()
-            if data[0][0] == data[0][1]:
+            if data[0][0] == data[0][1] and data[0][0] != -1:
                 return False
         except mysql.connector.errors.IntegrityError:
             return False
