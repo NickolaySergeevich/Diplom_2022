@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
-using MobileApp.ApiJsonRequest;
-using MobileApp.ApiJsonResponse;
 
 using Newtonsoft.Json;
 
@@ -21,9 +17,9 @@ namespace MobileApp
             _httpClient = new HttpClient();
         }
 
-        public async Task<LoginResponse> GetLoginResponseAsync(string url)
+        public async Task<T> GetResponseAsync<T>(string url)
         {
-            LoginResponse loginResponse = null;
+            var answer = default(T);
 
             try
             {
@@ -32,7 +28,7 @@ namespace MobileApp
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    loginResponse = JsonConvert.DeserializeObject<LoginResponse>(content);
+                    answer = JsonConvert.DeserializeObject<T>(content);
                 }
             }
             catch (Exception exception)
@@ -40,82 +36,12 @@ namespace MobileApp
                 Debug.WriteLine("\tERROR {0}", exception.Message);
             }
 
-            return loginResponse;
+            return answer;
         }
 
-        public async Task<List<TasksResponse>> GetTasksResponseAsync(string url)
+        public async Task<T> GetResponseWithBody<T, TB>(string url, TB requestData)
         {
-            List<TasksResponse> tasks = null;
-
-            try
-            {
-                var response = await _httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    tasks = JsonConvert.DeserializeObject<List<TasksResponse>>(content);
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine("\tERROR {0}", exception.Message);
-            }
-
-            return tasks;
-        }
-
-        public async Task<UserIdResponse> GetUserIdResponseAsync(string url)
-        {
-            UserIdResponse userId = null;
-
-            try
-            {
-                var response = await _httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    userId = JsonConvert.DeserializeObject<UserIdResponse>(content);
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine("\tERROR {0}", exception.Message);
-            }
-
-            return userId;
-        }
-
-        public async Task<RegistrationResponse> GetRegistrationResponseAsync(string url,
-            RegistrationRequest requestData)
-        {
-            RegistrationResponse registrationResponse = null;
-
-            var postData = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-
-            try
-            {
-                var response = await _httpClient.PostAsync(url, postData);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    registrationResponse = JsonConvert.DeserializeObject<RegistrationResponse>(content);
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine("\tERROR {0}", exception.Message);
-            }
-
-            return registrationResponse;
-        }
-
-        public async Task<SignUpToTaskResponse> GetSignUpToTaskResponseAsync(string url,
-            SignUpToTaskRequest requestData)
-        {
-            SignUpToTaskResponse signUpToTaskResponse = null;
+            var answer = default(T);
 
             var postData = new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8,
                 "application/json");
@@ -127,7 +53,7 @@ namespace MobileApp
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    signUpToTaskResponse = JsonConvert.DeserializeObject<SignUpToTaskResponse>(content);
+                    answer = JsonConvert.DeserializeObject<T>(content);
                 }
             }
             catch (Exception exception)
@@ -135,7 +61,7 @@ namespace MobileApp
                 Debug.WriteLine("\tERROR {0}", exception.Message);
             }
 
-            return signUpToTaskResponse;
+            return answer;
         }
     }
 }

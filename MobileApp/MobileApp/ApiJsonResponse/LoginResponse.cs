@@ -6,14 +6,8 @@ namespace MobileApp.ApiJsonResponse
     {
         [JsonProperty("id")]
         public int Id { get; set; }
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        [JsonProperty("surname")]
-        public string Surname { get; set; }
-        [JsonProperty("username")]
-        public string Username { get; set; }
-        [JsonProperty("password")]
-        public string Password { get; set; }
+        [JsonProperty("users_role_id")]
+        public int RoleId { get; set; }
         [JsonProperty("status")]
         public string Status { get; set; }
     }
