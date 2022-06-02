@@ -4,7 +4,7 @@
              xmlns:viewCell="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
              x:Class="MobileApp.ViewCells.TeamMemberCell">
     <ViewCell.View>
-        <Grid x:DataType="viewCell:TeamMemberCellClass" VerticalOptions="Start" HorizontalOptions="Fill">
+        <Grid x:DataType="viewCell:TeamMemberCellClass" HorizontalOptions="Fill" VerticalOptions="Start">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>

@@ -17,15 +17,10 @@ namespace MobileApp.Pages
             label_name.Text = tasksResponse.Name;
             label_organization.Text = tasksResponse.Organization;
             label_description.Text = tasksResponse.Description;
-
             label_teamCount.Text = tasksResponse.TeamsCount != -1 ? tasksResponse.TeamsCount.ToString() : "любое";
-
             label_teamMemberMax.Text = tasksResponse.TeamMemberMax != -1 ? tasksResponse.TeamMemberMax.ToString() : "любое";
-
             label_region.Text = tasksResponse.Region ?? "любой";
-
             label_isEssay.Text = tasksResponse.IsEssay ? "есть" : "нет";
-
             label_isTest.Text = tasksResponse.IsTest ? "есть" : "нет";
         }
 
