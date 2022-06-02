@@ -18,8 +18,8 @@ namespace MobileApp.Pages
 
         private ObservableCollection<TasksResponse> _tasks;
         public ObservableCollection<TasksResponse> Tasks => _tasks ?? (_tasks = new ObservableCollection<TasksResponse>());
-        private ObservableCollection<TasksResponse> _tasksByUser;
-        public ObservableCollection<TasksResponse> TasksByUser => _tasksByUser ?? (_tasksByUser = new ObservableCollection<TasksResponse>());
+        private ObservableCollection<TasksByUserResponse> _tasksByUser;
+        public ObservableCollection<TasksByUserResponse> TasksByUser => _tasksByUser ?? (_tasksByUser = new ObservableCollection<TasksByUserResponse>());
 
         public MainUserPage(UserInformationResponse userInformation)
         {
@@ -59,7 +59,7 @@ namespace MobileApp.Pages
 
         private async void UpdateTasksByUser()
         {
-            var tasks = await _restService.GetResponseAsync<List<TasksResponse>>(Constants.TasksByUserAddress +
+            var tasks = await _restService.GetResponseAsync<List<TasksByUserResponse>>(Constants.TasksByUserAddress +
                 "?user_id=" + _userInformation.UserId);
             foreach (var task in tasks)
                 TasksByUser.Add(task);

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:apiJsonResponse="clr-namespace:MobileApp.ApiJsonResponse;assembly=MobileApp"
+             x:Class="MobileApp.ViewCells.TaskByUserCell">
+    <ViewCell.View>
+        <Grid x:DataType="apiJsonResponse:TasksByUserResponse" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}" FontSize="Medium"></Label>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Organization}" FontSize="Small"></Label>
+            <Label Grid.Row="2" Grid.Column="0" Text="Название команды:" FontSize="Small"></Label>
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding CommandName}" FontSize="Small"></Label>
+            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Вы тимлидер" FontSize="Small" IsVisible="{Binding IsTeamLead}"></Label>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>
