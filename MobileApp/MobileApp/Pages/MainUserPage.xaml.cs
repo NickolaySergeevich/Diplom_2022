@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using MobileApp.ApiJsonRequest;
 using MobileApp.ApiJsonResponse;
 
 using Xamarin.Forms;
@@ -82,6 +83,38 @@ namespace MobileApp.Pages
         {
             Application.Current.MainPage = new UpdateUserInformationPage(_userInformation, _password);
         }
+
+        private async void ListView_tasksByUser_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            var answer = await DisplayAlert("Внимание", "Хотите ли вы убрать свою команду с конкурса", "Да", "Нет");
+            if (!answer)
+                return;
+            var request = new RemoveFromTaskRequest
+            {
+                TaskId = TasksByUser[e.ItemIndex].Id,
+                CommandName = TasksByUser[e.ItemIndex].CommandName
+            };
+
+            var response =
+                await _restService.GetResponseWithBody<WorkWithTaskResponse, RemoveFromTaskRequest>(
+                    Constants.RemoveFromTaskAddress, request);
+            switch (response.Status)
+            {
+                case Constants.ServerError:
+                    await DisplayAlert("Внимание!", "Ошибка сервера, обратитесь к системному администратору!", "Ok");
+                    break;
+                case "false":
+                    await DisplayAlert("Внимание!", "Ошибка на стороне бд, обратитесь к системному администратору!", "Ok");
+                    break;
+                default:
+                    await DisplayAlert("Успех!", "Вы успешно убрали свою команду с конкурса", "Ok");
+                    TasksByUser.Clear();
+                    UpdateTasksByUser();
+
+                    break;
+            }
+        }
+
         private void Button_reloadListTasksByUser_OnClicked(object sender, EventArgs e)
         {
             TasksByUser.Clear();

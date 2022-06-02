@@ -150,7 +150,7 @@ namespace MobileApp.Pages
                 };
 
                 var response =
-                    await _restService.GetResponseWithBody<SignUpToTaskResponse, SignUpToTaskRequest>(Constants.SignUpToTaskAddress, signUpToTask);
+                    await _restService.GetResponseWithBody<WorkWithTaskResponse, SignUpToTaskRequest>(Constants.SignUpToTaskAddress, signUpToTask);
                 switch (response.Status)
                 {
                     case Constants.ServerError:

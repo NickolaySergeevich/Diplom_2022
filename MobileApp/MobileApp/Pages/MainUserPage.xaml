@@ -94,7 +94,7 @@
 
                 <Label Text="Список задач:"></Label>
 
-                <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
+                <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasksByUser_OnItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <viewCell:TaskByUserCell></viewCell:TaskByUserCell>
