@@ -26,10 +26,10 @@ namespace MobileApp.Pages
 
             _restService = new RestService();
 
-            _loginResponse = loginResponse;
+            /*_loginResponse = loginResponse;
             label_name.Text = "Имя: " + _loginResponse.Name;
             label_surname.Text = "Фамилия: " + _loginResponse.Surname;
-            label_login.Text = "Логин: " + _loginResponse.Username;
+            label_login.Text = "Логин: " + _loginResponse.Username;*/
 
             listView_tasks.ItemsSource = Tasks;
             listView_groups.ItemsSource = TasksByUser;
@@ -43,18 +43,18 @@ namespace MobileApp.Pages
 
         private async void UpdateTasks()
         {
-            var tasks = await _restService.GetTasksResponseAsync(Constants.TasksAddress);
+            /*var tasks = await _restService.GetTasksResponseAsync(Constants.TasksAddress);
             foreach (var task in tasks)
-                Tasks.Add(task);
+                Tasks.Add(task);*/
         }
 
         private async void UpdateUserTasks()
         {
-            var tasksByUser =
+            /*var tasksByUser =
                 await _restService.GetTasksResponseAsync(Constants.TasksByUserAddress + "?user_id=" +
                                                          _loginResponse.Id);
             foreach (var task in tasksByUser)
-                TasksByUser.Add(task);
+                TasksByUser.Add(task);*/
         }
 
         private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)

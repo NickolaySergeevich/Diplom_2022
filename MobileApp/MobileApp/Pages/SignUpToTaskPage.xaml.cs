@@ -71,7 +71,7 @@ namespace MobileApp.Pages
 
             button_signUp.IsEnabled = false;
 
-            var usersId = new List<int>();
+            /*var usersId = new List<int>();
             var error = false;
             foreach (var member in members)
             {
@@ -121,7 +121,7 @@ namespace MobileApp.Pages
 
                         return;
                 }
-            }
+            }*/
 
             button_signUp.IsEnabled = true;
         }

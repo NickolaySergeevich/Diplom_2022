@@ -4,7 +4,11 @@
     {
         // Addresses
         public const string LoginAddress = "http://diplom.std-918.ist.mospolytech.ru/api/login/";
-        public const string RegistrationAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration/";
+        public const string RegistrationExpertAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_expert/";
+        public const string RegistrationOrgAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_org/";
+        public const string RegistrationPartnerAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_partners/";
+        public const string RegistrationUserAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_user/";
+        public const string RegistrationNastAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_nast/";
         public const string TasksAddress = "http://diplom.std-918.ist.mospolytech.ru/api/tasks/";
         public const string TasksByUserAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_tasks_by_user/";
         public const string GetUserIdAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_user_by_name/";
@@ -14,5 +18,12 @@
         // Server codes
         public const string ServerError = "404";
         public const string NoDataInDb = "502";
+
+        // Users role
+        public const int JustUser = 1;
+        public const int NastUser = 2;
+        public const int OrgUser = 3;
+        public const int PartnerUser = 4;
+        public const int ExpertUser = 5;
     }
 }

@@ -2,6 +2,8 @@
 using System.Security.Cryptography;
 using System.Text;
 
+using MobileApp.ApiJsonResponse;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -32,7 +34,7 @@ namespace MobileApp.Pages
 
             button_login.IsEnabled = false;
 
-            var response = await _restService.GetLoginResponseAsync(Constants.LoginAddress + "?username=" + login + "&password=" + password);
+            var response = await _restService.GetResponseAsync<LoginResponse>(Constants.LoginAddress + "?username=" + login + "&password=" + password);
             switch (response.Status)
             {
                 case Constants.ServerError:
@@ -42,7 +44,21 @@ namespace MobileApp.Pages
                     await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пройдите регистрацию.", "OK");
                     break;
                 default:
-                    Application.Current.MainPage = new MainUserPage(response);
+                    switch (response.RoleId)
+                    {
+                        case Constants.JustUser:
+                            // open new tab
+                            break;
+                        case Constants.NastUser:
+                            break;
+                        case Constants.OrgUser:
+                            break;
+                        case Constants.PartnerUser:
+                            break;
+                        case Constants.ExpertUser:
+                            break;
+                    }
+
                     break;
             }
 
@@ -51,7 +67,7 @@ namespace MobileApp.Pages
 
         private void Button_registration_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new RegistrationPage();
+            Application.Current.MainPage = new RegistrationUserPage();
         }
     }
 }
