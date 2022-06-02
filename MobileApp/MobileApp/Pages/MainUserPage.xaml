@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:MainUserPage"
-             xmlns:responses="clr-namespace:MobileApp.ApiJsonResponse"
+             xmlns:viewCell="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
             x:Class="MobileApp.Pages.MainUserPage">
     <ContentPage Title="Кейсы" >
         <Grid>
@@ -10,62 +10,16 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ListView x:Name="listView_tasks" HasUnevenRows="True" ItemTapped="ListView_tasks_OnItemTapped">
+            <ListView x:Name="listView_tasks" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasks_OnItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid x:DataType="responses:TasksResponse" Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-
-                                <Label Text="{Binding Name}" FontSize="Medium"></Label>
-                                <Label Grid.Row="1" Text="{Binding Organization}" FontSize="Small"></Label>
-                            </Grid>
-                        </ViewCell>
+                        <viewCell:TaskCell></viewCell:TaskCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <Button x:Name="button_reloadListTasks" Grid.Row="1" Text="Обновить список задач" Clicked="Button_reloadListTasks_OnClicked"></Button>
         </Grid>
     </ContentPage>
-    <ContentPage Title="Tab 2" />
-    <ContentPage Title="Аккаунт" >
-        <Grid Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Label x:Name="label_name" FontSize="Medium"></Label>
-            <Label x:Name="label_surname" Grid.Row="1" FontSize="Medium"></Label>
-            <Label x:Name="label_login" Grid.Row="2" FontSize="Medium"></Label>
-
-            <StackLayout Grid.Row="3" Margin="0, 10">
-                <Label Text="Список ваших проектов:"></Label>
-                <ListView x:Name="listView_groups" SelectionMode="None" HasUnevenRows="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid x:DataType="responses:TasksResponse" Margin="5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-
-                                    <Label Text="{Binding Name}" FontSize="Medium"></Label>
-                                    <Label Grid.Row="1" Text="{Binding Organization}" FontSize="Small"></Label>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-            <Button x:Name="button_updateUserTasks" Grid.Row="4" Text="Обновить список своих проектов" Clicked="Button_updateUserTasks_OnClicked"></Button>
-        </Grid>
-    </ContentPage>
+    <ContentPage Title="Чат" />
+    <ContentPage Title="Аккаунт" />
 </TabbedPage>

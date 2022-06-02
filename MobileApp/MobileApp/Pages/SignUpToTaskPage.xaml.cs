@@ -128,7 +128,7 @@ namespace MobileApp.Pages
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new ViewTaskPage(_tasksResponse, _loginResponse);
+            // Application.Current.MainPage = new ViewTaskPage(_tasksResponse, _loginResponse);
         }
     }
 }
