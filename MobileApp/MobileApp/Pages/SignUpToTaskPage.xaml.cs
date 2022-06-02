@@ -17,17 +17,19 @@ namespace MobileApp.Pages
     {
         private readonly RestService _restService;
 
+        private readonly UserInformationResponse _userInformation;
         private readonly TasksResponse _tasksResponse;
 
         private ObservableCollection<TeamMemberCellClass> _members;
         public ObservableCollection<TeamMemberCellClass> Members => _members ?? (_members = new ObservableCollection<TeamMemberCellClass>());
 
-        public SignUpToTaskPage(TasksResponse tasksResponse)
+        public SignUpToTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse)
         {
             InitializeComponent();
 
             _restService = new RestService();
 
+            _userInformation = userInformation;
             _tasksResponse = tasksResponse;
 
             label_taskName.Text = _tasksResponse.Name;
@@ -158,7 +160,7 @@ namespace MobileApp.Pages
                     default:
                         await DisplayAlert("Успех", "Вы успешно зарегистрированы!", "OK");
 
-                        Application.Current.MainPage = new ViewTaskPage(_tasksResponse);
+                        Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse);
 
                         return;
                 }
@@ -169,7 +171,7 @@ namespace MobileApp.Pages
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new ViewTaskPage(_tasksResponse);
+            Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace MobileApp.Pages
                                     await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пройдите регистрацию.", "OK");
                                     break;
                                 default:
-                                    Application.Current.MainPage = new MainUserPage();
+                                    Application.Current.MainPage = new MainUserPage(responseTwo);
                                     break;
                             }
 

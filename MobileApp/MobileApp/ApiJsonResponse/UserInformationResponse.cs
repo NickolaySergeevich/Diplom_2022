@@ -2,7 +2,7 @@
 
 namespace MobileApp.ApiJsonResponse
 {
-    internal class UserInformationResponse
+    public class UserInformationResponse
     {
         [JsonProperty("user_id")]
         public int UserId { get; set; }

@@ -10,11 +10,15 @@ namespace MobileApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewTaskPage
     {
+        private readonly UserInformationResponse _userInformation;
         private readonly TasksResponse _tasksResponse;
 
-        public ViewTaskPage(TasksResponse tasksResponse)
+        public ViewTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse)
         {
             InitializeComponent();
+
+            _userInformation = userInformation;
+            _tasksResponse = tasksResponse;
 
             label_name.Text = tasksResponse.Name;
             label_organization.Text = tasksResponse.Organization;
@@ -24,18 +28,16 @@ namespace MobileApp.Pages
             label_region.Text = tasksResponse.Region ?? "любой";
             label_isEssay.Text = tasksResponse.IsEssay ? "есть" : "нет";
             label_isTest.Text = tasksResponse.IsTest ? "есть" : "нет";
-
-            _tasksResponse = tasksResponse;
         }
 
         private void Button_signUpToTask_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new SignUpToTaskPage(_tasksResponse);
+            Application.Current.MainPage = new SignUpToTaskPage(_userInformation, _tasksResponse);
         }
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new MainUserPage();
+            Application.Current.MainPage = new MainUserPage(_userInformation);
         }
     }
 }

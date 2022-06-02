@@ -20,6 +20,90 @@
             <Button x:Name="button_reloadListTasks" Grid.Row="1" Text="Обновить список задач" Clicked="Button_reloadListTasks_OnClicked"></Button>
         </Grid>
     </ContentPage>
-    <ContentPage Title="Чат" />
-    <ContentPage Title="Аккаунт" />
+    <ContentPage Title="Чат" >
+        <Label Text="В разработке"></Label>
+    </ContentPage>
+    <ContentPage Title="Аккаунт" >
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="label_usernameText" Text="Логин:" FontSize="Small"></Label>
+            <Label x:Name="label_username" Grid.Row="0" Grid.Column="1" FontSize="Small"></Label>
+            <Label x:Name="label_nameText" Grid.Row="1" Grid.Column="0" Text="Имя:" FontSize="Small"></Label>
+            <Label x:Name="label_name" Grid.Row="1" Grid.Column="1" FontSize="Small"></Label>
+            <Label x:Name="label_surnameText" Grid.Row="2" Grid.Column="0" Text="Фамилия:" FontSize="Small"></Label>
+            <Label x:Name="label_surname" Grid.Row="2" Grid.Column="1" FontSize="Small"></Label>
+            <Label x:Name="label_patronymicText" Grid.Row="3" Grid.Column="0" Text="Отчество:" FontSize="Small"></Label>
+            <Label x:Name="label_patronymic" Grid.Row="3" Grid.Column="1" FontSize="Small"></Label>
+
+            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="label_countryText" Text="Страна:"></Label>
+                <Label x:Name="label_country" Grid.Column="1"></Label>
+                <Label x:Name="label_cityText" Grid.Column="2" Text="Город:"></Label>
+                <Label x:Name="label_city" Grid.Column="3"></Label>
+            </Grid>
+
+            <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="label_educationalInstitutionText" Text="Школа:"></Label>
+                <Label x:Name="label_educationalInstitution" Grid.Column="1"></Label>
+                <Label x:Name="label_classNumberText" Grid.Column="2" Text="Класс:"></Label>
+                <Label x:Name="label_classNumber" Grid.Column="3"></Label>
+            </Grid>
+
+            <Label x:Name="label_emailText" Grid.Row="6" Grid.Column="0" Text="Email:"></Label>
+            <Label x:Name="label_email" Grid.Row="6" Grid.Column="1"></Label>
+            <Label x:Name="label_phoneNumberText" Grid.Row="7" Grid.Column="0" Text="Номер телефона:"></Label>
+            <Label x:Name="label_phoneNumber" Grid.Row="7" Grid.Column="1"></Label>
+            <Button x:Name="button_changeUserInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Изменить данные"></Button>
+
+            <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Text="Список задач:"></Label>
+
+                <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <viewCell:TaskCell></viewCell:TaskCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Button x:Name="button_reloadListTasksByUser" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Обновить список задач" Clicked="Button_reloadListTasksByUser_OnClicked"></Button>
+        </Grid>
+    </ContentPage>
 </TabbedPage>
