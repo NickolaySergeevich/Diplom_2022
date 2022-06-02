@@ -203,6 +203,43 @@ class DBHelper:
             return {"id": data[0][0], "users_role_id": data[0][1]}
 
     @staticmethod
+    def get_user_information(user_id: int, username: str, password: str) -> Optional[dict]:
+        """
+        Получение информации о пользователе
+
+        :param user_id: ID пользователя
+        :param username: Логин пользователя
+        :param password: Пароль пользователя (MD5)
+
+        :return: Кортеж с информацией или None
+        """
+
+        if DBHelper.get_instance().login_in(username, password) is None:
+            return None
+
+        query = f"select name, surname, patronymic, country, city, educational_institution, class, email, " \
+                f"phone_number from users_info where user_id = {user_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        data = DBHelper.get_instance().__cursor.fetchall()
+        if len(data) == 0:
+            return None
+        else:
+            return {
+                "user_id": user_id,
+                "username": username,
+                "name": data[0][0],
+                "surname": data[0][1],
+                "patronymic": data[0][2],
+                "country": data[0][3],
+                "city": data[0][4],
+                "educational_institution": data[0][5],
+                "class_number": data[0][6],
+                "email": data[0][7],
+                "phone_number": data[0][8]
+            }
+
+    @staticmethod
     def registration_expert(username: str, password: str, name: str, surname: str, patronymic: str, email: str,
                             phone_number: str, organization: str, city: str) -> bool:
         """
@@ -500,6 +537,7 @@ def main() -> None:
     # print(DBHelper.get_instance().get_tasks_by_user(14))
     # print(DBHelper.get_instance().get_chat("asakura", "dasha"))
     # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))
+    # print(DBHelper.get_instance().get_user_information(14, "asakura", "78e5233d20f3608ebc410ee2c18a41da"))
     # print(DBHelper.get_instance().registration_expert("testExpert", "78e5233d20f3608ebc410ee2c18a41da", "Test",
     #                                                   "Test", "Test", "test@gmail.com", "11111111111",
     #                                                   "Test", "Test"))
