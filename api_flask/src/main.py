@@ -136,6 +136,25 @@ def login() -> Response:
         return jsonify({"status": NO_DATA_IN_DB})
 
 
+@application.route("/api/get_user_information/", methods=["GET"])
+def get_user_information() -> Response:
+    """
+    Получение информации о пользователе
+
+    :return: Ответ либо информация о пользователе, либо ошибка
+    """
+
+    data = get_data_from_args(("user_id", "username", "password"), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    answer_from_db = DBHelper.get_instance().get_user_information(**data)
+    if answer_from_db is not None:
+        return jsonify(answer_from_db)
+    else:
+        return jsonify({"status": NO_DATA_IN_DB})
+
+
 @application.route("/api/registration_expert/", methods=["POST"])
 def registration_expert() -> Response:
     """
