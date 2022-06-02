@@ -220,6 +220,22 @@ def registration_user() -> Response:
     return jsonify({"status": DBHelper.get_instance().registration_user(**data)})
 
 
+@application.route("/api/update_user/", methods=["POST"])
+def update_user() -> Response:
+    """
+    Обновление существующего пользователя
+
+    :return: Json с информацией о том, успешно ли
+    """
+
+    data = get_data_from_json(("user_id", "username", "password", "name", "surname", "patronymic", "country", "city",
+                               "educational_institution", "class_number", "email", "phone_number"), request.get_json())
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    return jsonify({"status": DBHelper.get_instance().update_user(**data)})
+
+
 @application.route("/api/registration_nast/", methods=["POST"])
 def registration_nast() -> Response:
     """
