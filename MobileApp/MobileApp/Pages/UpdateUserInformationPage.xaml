@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:UpdateUserInformationPage"
+             x:Class="MobileApp.Pages.UpdateUserInformationPage">
+    <Grid x:Name="grid_main" HorizontalOptions="Center" VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" MaxLength="256"></Entry>
+        <Entry x:Name="entry_name" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Имя" MaxLength="256"></Entry>
+        <Entry x:Name="entry_surname" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Фамилия" MaxLength="256"></Entry>
+        <Entry x:Name="entry_patronymic" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Отчество" MaxLength="256"></Entry>
+        <Entry x:Name="entry_country" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Страна" MaxLength="256"></Entry>
+        <Entry x:Name="entry_city" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Город" MaxLength="256"></Entry>
+        <Entry x:Name="entry_educationalInstitution" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Место обучения" MaxLength="256"></Entry>
+        <Entry x:Name="entry_classNumber" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Номер класса" MaxLength="2" Keyboard="Numeric"></Entry>
+        <Entry x:Name="entry_email" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Электронная почта" MaxLength="256" Keyboard="Email"></Entry>
+        <Entry x:Name="entry_phoneNumber" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Номер телефона" MaxLength="11" Keyboard="Telephone"></Entry>
+
+        <Button x:Name="button_update" Grid.Row="10" Grid.Column="0" Text="Обновить данные" Clicked="Button_update_OnClicked"></Button>
+        <Button x:Name="button_exit" Grid.Row="10" Grid.Column="1" Text="Вернуться" Clicked="Button_exit_OnClicked"></Button>
+    </Grid>
+</ContentPage>

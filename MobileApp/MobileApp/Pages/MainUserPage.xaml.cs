@@ -15,19 +15,21 @@ namespace MobileApp.Pages
         private readonly RestService _restService;
 
         private readonly UserInformationResponse _userInformation;
+        private readonly string _password;
 
         private ObservableCollection<TasksResponse> _tasks;
         public ObservableCollection<TasksResponse> Tasks => _tasks ?? (_tasks = new ObservableCollection<TasksResponse>());
         private ObservableCollection<TasksByUserResponse> _tasksByUser;
         public ObservableCollection<TasksByUserResponse> TasksByUser => _tasksByUser ?? (_tasksByUser = new ObservableCollection<TasksByUserResponse>());
 
-        public MainUserPage(UserInformationResponse userInformation)
+        public MainUserPage(UserInformationResponse userInformation, string password)
         {
             InitializeComponent();
 
             _restService = new RestService();
 
             _userInformation = userInformation;
+            _password = password;
 
             listView_tasks.ItemsSource = Tasks;
             listView_tasksByUser.ItemsSource = TasksByUser;
@@ -67,7 +69,7 @@ namespace MobileApp.Pages
 
         private void ListView_tasks_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            Application.Current.MainPage = new ViewTaskPage(_userInformation, Tasks[e.ItemIndex]);
+            Application.Current.MainPage = new ViewTaskPage(_userInformation, Tasks[e.ItemIndex], _password);
         }
 
         private void Button_reloadListTasks_OnClicked(object sender, EventArgs e)
@@ -76,6 +78,10 @@ namespace MobileApp.Pages
             UpdateTasks();
         }
 
+        private void Button_changeUserInformation_OnClicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new UpdateUserInformationPage(_userInformation, _password);
+        }
         private void Button_reloadListTasksByUser_OnClicked(object sender, EventArgs e)
         {
             TasksByUser.Clear();

@@ -50,7 +50,7 @@ namespace MobileApp.Pages
             button_registration.IsEnabled = false;
 
             var response =
-                await _restService.GetResponseWithBody<RegistrationResponse, RegistrationUserRequest>(Constants.RegistrationUserAddress, registrationUserRequest);
+                await _restService.GetResponseWithBody<RegistrationUserResponse, RegistrationUserRequest>(Constants.RegistrationUserAddress, registrationUserRequest);
             switch (response.Status)
             {
                 case Constants.ServerError:
