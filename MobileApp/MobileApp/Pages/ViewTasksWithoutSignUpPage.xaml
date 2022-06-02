@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:ViewTasksWithoutSignUpPage"
+             x:Class="MobileApp.Pages.ViewTasksWithoutSignUpPage">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Start" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="label_name" FontSize="Medium"></Label>
+        <Label x:Name="label_organization" Grid.Row="1" FontSize="Small"></Label>
+        <Label x:Name="label_descriptionText" Grid.Row="2" Text="Описание:" FontSize="Medium"></Label>
+        <Label x:Name="label_description" Grid.Row="3" FontSize="Medium"></Label>
+
+        <Grid Grid.Row="4" HorizontalOptions="Start" VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="label_teamCountText" Text="Кол-во команд:"></Label>
+            <Label x:Name="label_teamCount" Grid.Column="1"></Label>
+            <Label x:Name="label_teamMemberMaxText" Grid.Column="2" Text="Макс. членов команды:"></Label>
+            <Label x:Name="label_teamMemberMax" Grid.Column="3"></Label>
+        </Grid>
+
+        <Grid Grid.Row="5" HorizontalOptions="Start" VerticalOptions="Start">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="label_regionText" Text="Регион:"></Label>
+            <Label x:Name="label_region" Grid.Column="1"></Label>
+            <Label x:Name="label_isEssayText" Grid.Column="2" Text="Эссе:"></Label>
+            <Label x:Name="label_isEssay" Grid.Column="3"></Label>
+            <Label x:Name="label_isTestText" Grid.Column="4" Text="Тест:"></Label>
+            <Label x:Name="label_isTest" Grid.Column="5"></Label>
+        </Grid>
+
+        <Button x:Name="button_back" Grid.Row="6" Text="Назад" Clicked="Button_back_OnClicked"></Button>
+    </Grid>
+</ContentPage>
