@@ -297,7 +297,7 @@ def get_teams() -> Response:
     if DBHelper.get_instance().login_in(**data)["users_role_id"] != 3:
         return jsonify({"status": NO_DATA_IN_DB})
 
-    return jsonify({"list": DBHelper.get_instance().get_users_with_teams()})
+    return jsonify({"data": DBHelper.get_instance().get_users_with_teams()})
 
 
 def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
