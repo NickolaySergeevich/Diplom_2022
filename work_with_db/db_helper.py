@@ -474,6 +474,46 @@ class DBHelper:
         return True
 
     @staticmethod
+    def update_org(user_id: int, username: str, password: str, name: str, surname: str, patronymic: str,
+                   email: str) -> bool:
+        """
+        Обновление данных организатора
+
+        :param user_id: ID пользователя
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param email: Почта пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"select id from users where id = {user_id} and password = '{password}'"
+            DBHelper.get_instance().__cursor.execute(query)
+
+            if len(DBHelper.get_instance().__cursor.fetchall()) == 0:
+                return False
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"update users set username = '{username}' where id = {user_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+
+            query = f"update organizing_committee_info set name = '{name}', surname = '{surname}', " \
+                    f"patronymic = '{patronymic}',  email = '{email}' where user_id = {user_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
     def registration_nast(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
                           city: str, educational_institution: str, email: str, phone_number: str) -> bool:
         """
@@ -663,6 +703,8 @@ def main() -> None:
     # print(DBHelper.get_instance().update_user(48, "change", "5A50814F0E1E68543505DE83B28D4633", "change", "change",
     #                                           "change", "change", "change", "change", 5, "change@gmail.com",
     #                                           "81231231212"))
+    # print(DBHelper.get_instance().update_org(23, "haha", "78e5233d20f3608ebc410ee2c18a41da", "haha", "haha", "haha",
+    #                                          "haha@haha.com"))
     # print(DBHelper.get_instance().registration_nast("TestNast", "78e5233d20f3608ebc410ee2c18a41da", "Test", "Test",
     #                                                 "Test", "Test", "test", "Test", "test@ya.ru", "22222222222"))
     # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
