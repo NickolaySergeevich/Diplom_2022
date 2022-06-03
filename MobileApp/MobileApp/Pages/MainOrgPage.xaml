@@ -10,21 +10,24 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="label_nameText" Text="Имя:"></Label>
-        <Label x:Name="label_name" Grid.Row="0" Grid.Column="1"></Label>
-        <Label x:Name="label_surnameText" Grid.Row="1" Grid.Column="0" Text="Фамилия:"></Label>
-        <Label x:Name="label_surname" Grid.Row="1" Grid.Column="1"></Label>
-        <Label x:Name="label_patronymicText" Grid.Row="2" Grid.Column="0" Text="Отчество:"></Label>
-        <Label x:Name="label_patronymic" Grid.Row="2" Grid.Column="1"></Label>
-        <Label x:Name="label_emailText" Grid.Row="3" Grid.Column="0" Text="Email:"></Label>
-        <Label x:Name="label_email" Grid.Row="3" Grid.Column="1"></Label>
-        <Button x:Name="button_changeInformation" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию"></Button>
-        <Button x:Name="button_downloadTeams" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" Clicked="Button_downloadTeams_OnClicked"></Button>
+        <Label x:Name="label_loginText" Text="Логин:"></Label>
+        <Label x:Name="label_login" Grid.Row="0" Grid.Column="1"></Label>
+        <Label x:Name="label_nameText" Grid.Row="1" Text="Имя:"></Label>
+        <Label x:Name="label_name" Grid.Row="1" Grid.Column="1"></Label>
+        <Label x:Name="label_surnameText" Grid.Row="2" Grid.Column="0" Text="Фамилия:"></Label>
+        <Label x:Name="label_surname" Grid.Row="2" Grid.Column="1"></Label>
+        <Label x:Name="label_patronymicText" Grid.Row="3" Grid.Column="0" Text="Отчество:"></Label>
+        <Label x:Name="label_patronymic" Grid.Row="3" Grid.Column="1"></Label>
+        <Label x:Name="label_emailText" Grid.Row="4" Grid.Column="0" Text="Email:"></Label>
+        <Label x:Name="label_email" Grid.Row="4" Grid.Column="1"></Label>
+        <Button x:Name="button_changeInformation" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию" Clicked="Button_changeInformation_OnClicked"></Button>
+        <Button x:Name="button_downloadTeams" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" Clicked="Button_downloadTeams_OnClicked"></Button>
     </Grid>
 </ContentPage>

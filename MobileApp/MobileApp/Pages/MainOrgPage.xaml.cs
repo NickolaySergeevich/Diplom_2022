@@ -3,6 +3,7 @@ using System.IO;
 
 using MobileApp.ApiJsonResponse;
 
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Pages
@@ -24,10 +25,16 @@ namespace MobileApp.Pages
             _orgInformation = orgInformation;
             _password = password;
 
+            label_login.Text = _orgInformation.Username;
             label_name.Text = _orgInformation.Name;
             label_surname.Text = _orgInformation.Surname;
             label_patronymic.Text = _orgInformation.Patronymic;
             label_email.Text = _orgInformation.Email;
+        }
+
+        private void Button_changeInformation_OnClicked(object sender, EventArgs e)
+        {
+            Application.Current.MainPage = new UpdateOrgInformationPage(_orgInformation, _password);
         }
 
         [Obsolete("Obsolete")]
