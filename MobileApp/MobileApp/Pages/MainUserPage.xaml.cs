@@ -86,7 +86,7 @@ namespace MobileApp.Pages
 
         private async void ListView_tasksByUser_OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var answer = await DisplayAlert("Внимание", "Хотите ли вы убрать свою команду с конкурса", "Да", "Нет");
+            var answer = await DisplayAlert("Внимание", "Хотите ли вы убрать свою команду с конкурса?", "Да", "Нет");
             if (!answer)
                 return;
             var request = new RemoveFromTaskRequest
