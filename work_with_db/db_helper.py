@@ -240,6 +240,37 @@ class DBHelper:
             }
 
     @staticmethod
+    def get_org_information(user_id: int, username: str, password: str) -> Optional[dict]:
+        """
+        Получение информации об организаторе
+
+        :param user_id: ID пользователя
+        :param username: Логин пользователя
+        :param password: Пароль пользователя (MD5)
+
+        :return: Кортеж с информацией или None
+        """
+
+        if DBHelper.get_instance().login_in(username, password) is None:
+            return None
+
+        query = f"select name, surname, patronymic, email from organizing_committee_info where user_id = {user_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        data = DBHelper.get_instance().__cursor.fetchall()
+        if len(data) == 0:
+            return None
+        else:
+            return {
+                "user_id": user_id,
+                "username": username,
+                "name": data[0][0],
+                "surname": data[0][1],
+                "patronymic": data[0][2],
+                "email": data[0][3]
+            }
+
+    @staticmethod
     def registration_expert(username: str, password: str, name: str, surname: str, patronymic: str, email: str,
                             phone_number: str, organization: str, city: str) -> bool:
         """
@@ -617,6 +648,7 @@ def main() -> None:
     # print(DBHelper.get_instance().get_chat("asakura", "dasha"))
     # print(DBHelper.get_instance().login_in("asakura", "78e5233d20f3608ebc410ee2c18a41da"))
     # print(DBHelper.get_instance().get_user_information(14, "asakura", "78e5233d20f3608ebc410ee2c18a41da"))
+    # print(DBHelper.get_instance().get_org_information(16, "asakuraOrg", "78e5233d20f3608ebc410ee2c18a41da"))
     # print(DBHelper.get_instance().registration_expert("testExpert", "78e5233d20f3608ebc410ee2c18a41da", "Test",
     #                                                   "Test", "Test", "test@gmail.com", "11111111111",
     #                                                   "Test", "Test"))
