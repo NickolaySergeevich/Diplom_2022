@@ -550,6 +550,37 @@ class DBHelper:
         return True
 
     @staticmethod
+    def get_users_with_teams() -> dict:
+        """
+        Находит списки команд и удобно пакует
+
+        :return: Хороший словарик
+        """
+
+        query = "select users_info.name, users_info.surname, users_info.patronymic, users_info.email, " \
+                "users_to_task.is_team_lead, users_to_task.name, tasks.name from users_info " \
+                "left join users_to_task on users_info.user_id = users_to_task.user_id " \
+                "left join tasks on tasks.id = users_to_task.task_id " \
+                "where users_to_task.name IS NOT NULL"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        return_dict = dict()
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            if elem[-1] not in return_dict.keys():
+                return_dict[elem[-1]] = dict()
+            if elem[-2] not in return_dict[elem[-1]].keys():
+                return_dict[elem[-1]][elem[-2]] = list()
+            return_dict[elem[-1]][elem[-2]].append({
+                "name": elem[0],
+                "surname": elem[1],
+                "patronymic": elem[2],
+                "email": elem[3],
+                "is_team_lead": bool(elem[4])
+            })
+
+        return return_dict
+
+    @staticmethod
     def read_settings_file() -> dict:
         """
         Читает файл с настройками
@@ -604,6 +635,7 @@ def main() -> None:
     #                                                 "Test", "Test", "test", "Test", "test@ya.ru", "22222222222"))
     # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
     # print(DBHelper.get_instance().remove_from_task(5, "Test"))
+    # print(DBHelper.get_instance().get_users_with_teams())
 
 
 if __name__ == '__main__':
