@@ -282,6 +282,24 @@ def remove_from_task() -> Response:
     return jsonify({"status": DBHelper.get_instance().remove_from_task(**data)})
 
 
+@application.route("/api/get_teams/", methods=["GET"])
+def get_teams() -> Response:
+    """
+    Получение списка команд
+
+    :return: Json с командами
+    """
+
+    data = get_data_from_args(("username", "password"), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    if DBHelper.get_instance().login_in(**data)["users_role_id"] != 3:
+        return jsonify({"status": NO_DATA_IN_DB})
+
+    return jsonify({"data": DBHelper.get_instance().get_users_with_teams()})
+
+
 def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
     """
     Получение данных из json
