@@ -12,13 +12,15 @@ namespace MobileApp.Pages
     {
         private readonly UserInformationResponse _userInformation;
         private readonly TasksResponse _tasksResponse;
+        private readonly string _password;
 
-        public ViewTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse)
+        public ViewTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse, string password)
         {
             InitializeComponent();
 
             _userInformation = userInformation;
             _tasksResponse = tasksResponse;
+            _password = password;
 
             label_name.Text = tasksResponse.Name;
             label_organization.Text = tasksResponse.Organization;
@@ -32,12 +34,12 @@ namespace MobileApp.Pages
 
         private void Button_signUpToTask_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new SignUpToTaskPage(_userInformation, _tasksResponse);
+            Application.Current.MainPage = new SignUpToTaskPage(_userInformation, _tasksResponse, _password);
         }
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new MainUserPage(_userInformation);
+            Application.Current.MainPage = new MainUserPage(_userInformation, _password);
         }
     }
 }

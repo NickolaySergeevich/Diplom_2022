@@ -84,7 +84,7 @@
             <Label x:Name="label_email" Grid.Row="6" Grid.Column="1"></Label>
             <Label x:Name="label_phoneNumberText" Grid.Row="7" Grid.Column="0" Text="Номер телефона:"></Label>
             <Label x:Name="label_phoneNumber" Grid.Row="7" Grid.Column="1"></Label>
-            <Button x:Name="button_changeUserInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Изменить данные"></Button>
+            <Button x:Name="button_changeUserInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Изменить данные" Clicked="Button_changeUserInformation_OnClicked"></Button>
 
             <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
@@ -94,10 +94,10 @@
 
                 <Label Text="Список задач:"></Label>
 
-                <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
+                <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasksByUser_OnItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <viewCell:TaskCell></viewCell:TaskCell>
+                            <viewCell:TaskByUserCell></viewCell:TaskByUserCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

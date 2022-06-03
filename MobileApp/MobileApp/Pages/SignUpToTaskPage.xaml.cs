@@ -19,11 +19,12 @@ namespace MobileApp.Pages
 
         private readonly UserInformationResponse _userInformation;
         private readonly TasksResponse _tasksResponse;
+        private readonly string _password;
 
         private ObservableCollection<TeamMemberCellClass> _members;
         public ObservableCollection<TeamMemberCellClass> Members => _members ?? (_members = new ObservableCollection<TeamMemberCellClass>());
 
-        public SignUpToTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse)
+        public SignUpToTaskPage(UserInformationResponse userInformation, TasksResponse tasksResponse, string password)
         {
             InitializeComponent();
 
@@ -31,6 +32,7 @@ namespace MobileApp.Pages
 
             _userInformation = userInformation;
             _tasksResponse = tasksResponse;
+            _password = password;
 
             label_taskName.Text = _tasksResponse.Name;
             label_taskOrganization.Text = _tasksResponse.Organization;
@@ -148,7 +150,7 @@ namespace MobileApp.Pages
                 };
 
                 var response =
-                    await _restService.GetResponseWithBody<SignUpToTaskResponse, SignUpToTaskRequest>(Constants.SignUpToTaskAddress, signUpToTask);
+                    await _restService.GetResponseWithBody<WorkWithTaskResponse, SignUpToTaskRequest>(Constants.SignUpToTaskAddress, signUpToTask);
                 switch (response.Status)
                 {
                     case Constants.ServerError:
@@ -160,7 +162,7 @@ namespace MobileApp.Pages
                     default:
                         await DisplayAlert("Успех", "Вы успешно зарегистрированы!", "OK");
 
-                        Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse);
+                        Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse, _password);
 
                         return;
                 }
@@ -171,7 +173,7 @@ namespace MobileApp.Pages
 
         private void Button_exit_OnClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse);
+            Application.Current.MainPage = new ViewTaskPage(_userInformation, _tasksResponse, _password);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MobileApp.ApiJsonResponse
 {
-    internal class RegistrationResponse
+    internal class WorkWithTaskResponse
     {
         [JsonProperty("status")]
         public string Status { get; set; }
