@@ -82,7 +82,22 @@ namespace MobileApp.Pages
                         case Constants.NastUser:
                             break;
                         case Constants.OrgUser:
+                            var responseFour = await _restService.GetResponseAsync<OrgInformationResponse>(
+                                Constants.OrgInformationAddress + "?user_id=" + response.Id + "&username=" + login +
+                                "&password=" + password);
 
+                            switch (responseFour.Status)
+                            {
+                                case Constants.ServerError:
+                                    await DisplayAlert("Ooops", "С сервером что-то не так. Обратитесь к системному администратору.", "OK");
+                                    break;
+                                case Constants.NoDataInDb:
+                                    await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пройдите регистрацию у администратора.", "OK");
+                                    break;
+                                default:
+                                    Application.Current.MainPage = new MainOrgPage(responseFour, password);
+                                    break;
+                            }
 
                             break;
                         case Constants.PartnerUser:

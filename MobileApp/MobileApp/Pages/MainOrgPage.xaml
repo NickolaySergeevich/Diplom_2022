@@ -25,6 +25,6 @@
         <Label x:Name="label_emailText" Grid.Row="3" Grid.Column="0" Text="Email:"></Label>
         <Label x:Name="label_email" Grid.Row="3" Grid.Column="1"></Label>
         <Button x:Name="button_changeInformation" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию"></Button>
-        <Button x:Name="button_downloadTeams" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды"></Button>
+        <Button x:Name="button_downloadTeams" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" Clicked="Button_downloadTeams_OnClicked"></Button>
     </Grid>
 </ContentPage>

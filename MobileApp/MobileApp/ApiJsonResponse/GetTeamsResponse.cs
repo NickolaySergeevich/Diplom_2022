@@ -10,5 +10,7 @@ namespace MobileApp.ApiJsonResponse
     {
         [JsonProperty("data")]
         public Dictionary<string, Dictionary<string, List<GetTeamsListType>>> Data { get; set; }
+        [JsonProperty("status")]
+        public string Status { get; set; }
     }
 }
