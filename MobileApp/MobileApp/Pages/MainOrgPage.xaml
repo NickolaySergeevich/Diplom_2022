@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:MainOrgPage"
+             x:Class="MobileApp.Pages.MainOrgPage">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Start" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="label_nameText" Text="Имя:"></Label>
+        <Label x:Name="label_name" Grid.Row="0" Grid.Column="1"></Label>
+        <Label x:Name="label_surnameText" Grid.Row="1" Grid.Column="0" Text="Фамилия:"></Label>
+        <Label x:Name="label_surname" Grid.Row="1" Grid.Column="1"></Label>
+        <Label x:Name="label_patronymicText" Grid.Row="2" Grid.Column="0" Text="Отчество:"></Label>
+        <Label x:Name="label_patronymic" Grid.Row="2" Grid.Column="1"></Label>
+        <Label x:Name="label_emailText" Grid.Row="3" Grid.Column="0" Text="Email:"></Label>
+        <Label x:Name="label_email" Grid.Row="3" Grid.Column="1"></Label>
+        <Button x:Name="button_changeInformation" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию"></Button>
+        <Button x:Name="button_downloadTeams" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды"></Button>
+    </Grid>
+</ContentPage>
