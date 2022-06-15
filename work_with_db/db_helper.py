@@ -632,7 +632,40 @@ class DBHelper:
                 "users_to_task.is_team_lead, users_to_task.name, tasks.name from users_info " \
                 "left join users_to_task on users_info.user_id = users_to_task.user_id " \
                 "left join tasks on tasks.id = users_to_task.task_id " \
-                "where users_to_task.name IS NOT NULL"
+                "where users_to_task.name is not null"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        return_dict = dict()
+        for elem in DBHelper.get_instance().__cursor.fetchall():
+            if elem[-1] not in return_dict.keys():
+                return_dict[elem[-1]] = dict()
+            if elem[-2] not in return_dict[elem[-1]].keys():
+                return_dict[elem[-1]][elem[-2]] = list()
+            return_dict[elem[-1]][elem[-2]].append({
+                "name": elem[0],
+                "surname": elem[1],
+                "patronymic": elem[2],
+                "email": elem[3],
+                "is_team_lead": bool(elem[4])
+            })
+
+        return return_dict
+
+    @staticmethod
+    def get_users_with_teams_by_org(organization_name: str) -> dict:
+        """
+        Находит список команд для организатора и удобно пакует
+
+        :param organization_name: Название организации
+
+        :return: Словарик с пользователями
+        """
+
+        query = f"select users_info.name, users_info.surname, users_info.patronymic, users_info.email, " \
+                f"users_to_task.is_team_lead, users_to_task.name, tasks.name from users_info " \
+                f"left join users_to_task on users_info.user_id = users_to_task.user_id " \
+                f"left join tasks on tasks.id = users_to_task.task_id " \
+                f"where users_to_task.name is not null and tasks.organization = '{organization_name}'"
         DBHelper.get_instance().__cursor.execute(query)
 
         return_dict = dict()
@@ -710,6 +743,7 @@ def main() -> None:
     # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
     # print(DBHelper.get_instance().remove_from_task(5, "Test"))
     # print(DBHelper.get_instance().get_users_with_teams())
+    # print(DBHelper.get_instance().get_users_with_teams_by_org("Банк ВТБ"))
 
 
 if __name__ == '__main__':
