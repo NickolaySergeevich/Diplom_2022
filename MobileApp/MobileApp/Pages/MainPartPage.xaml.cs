@@ -3,6 +3,7 @@ using System.IO;
 
 using MobileApp.ApiJsonResponse;
 
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MobileApp.Pages
@@ -36,7 +37,7 @@ namespace MobileApp.Pages
 
         private void Button_changeInformation_OnClicked(object sender, EventArgs e)
         {
-
+            Application.Current.MainPage = new UpdatePartInformation(_partInformation, _password);
         }
 
         [Obsolete("Obsolete")]

@@ -13,6 +13,7 @@
         public const string RegistrationUserAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_user/";
         public const string UpdateUserAddress = "http://diplom.std-918.ist.mospolytech.ru/api/update_user/";
         public const string UpdateOrgAddress = "http://diplom.std-918.ist.mospolytech.ru/api/update_org/";
+        public const string UpdatePartAddress = "http://diplom.std-918.ist.mospolytech.ru/api/update_part/";
         public const string RegistrationNastAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_nast/";
         public const string TasksAddress = "http://diplom.std-918.ist.mospolytech.ru/api/tasks/";
         public const string TasksByUserAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_tasks_by_user/";
