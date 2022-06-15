@@ -20,7 +20,9 @@
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Organization}" FontSize="Small"></Label>
             <Label Grid.Row="2" Grid.Column="0" Text="Название команды:" FontSize="Small"></Label>
             <Label Grid.Row="2" Grid.Column="1" Text="{Binding CommandName}" FontSize="Small"></Label>
-            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Вы тимлидер" FontSize="Small" IsVisible="{Binding IsTeamLead}"></Label>
+            <Label Grid.Row="3" Grid.Column="0" Text="Вы тимлидер" FontSize="Small" IsVisible="{Binding IsTeamLead}"></Label>
+            <Button x:Name="button_loadWork" Grid.Row="3" Grid.Column="1" Text="Загрузить работу" FontSize="Small" IsVisible="{Binding IsTeamLead}" Clicked="Button_OnClicked"></Button>
+            <Button x:Name="button_lookWork" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Просмотреть работу" FontSize="Small" IsVisible="{Binding NotTeamLead}" Clicked="Button_OnClicked"></Button>
         </Grid>
     </ViewCell.View>
 </ViewCell>

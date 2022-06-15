@@ -14,5 +14,6 @@ namespace MobileApp.ApiJsonResponse
         public string CommandName { get; set; }
         [JsonProperty("is_team_lead")]
         public bool IsTeamLead { get; set; }
+        public bool NotTeamLead => !IsTeamLead;
     }
 }
