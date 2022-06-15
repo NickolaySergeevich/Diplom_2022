@@ -335,6 +335,24 @@ def get_teams() -> Response:
     return jsonify({"data": DBHelper.get_instance().get_users_with_teams()})
 
 
+@application.route("/api/get_teams_by_org/", methods=["GET"])
+def get_teams_by_org() -> Response:
+    """
+    Получение списка команд для партнёра
+
+    :return: Json с командами
+    """
+
+    data = get_data_from_args(("username", "password", "organization_name"), request.args)
+    if data is None:
+        return jsonify({"status": NO_DATA})
+
+    if DBHelper.get_instance().login_in(data["username"], data["password"])["users_role_id"] != 4:
+        return jsonify({"status": NO_DATA_IN_DB})
+
+    return jsonify({"data": DBHelper.get_instance().get_users_with_teams_by_org(data["organization_name"])})
+
+
 def get_data_from_json(what_need: tuple, request_data: tuple) -> Optional[dict]:
     """
     Получение данных из json
