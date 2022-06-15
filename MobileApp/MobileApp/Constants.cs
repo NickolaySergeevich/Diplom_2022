@@ -20,6 +20,7 @@
         public const string SignUpToTaskAddress = "http://diplom.std-918.ist.mospolytech.ru/api/tasks/sign_up_to_task/";
         public const string RemoveFromTaskAddress = "http://diplom.std-918.ist.mospolytech.ru/api/tasks/remove_from_task/";
         public const string GetTeamsAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_teams/";
+        public const string GetTeamsByPartAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_teams_by_org/";
 
         // Server codes
         public const string ServerError = "404";
