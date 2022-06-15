@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:MainPartPage"
              x:Class="MobileApp.Pages.MainPartPage">
-    <Grid HorizontalOptions="Fill" VerticalOptions="Start" Margin="5">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Start" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -20,23 +20,23 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="label_loginText" Text="Логин:"></Label>
-        <Label x:Name="label_login" Grid.Row="0" Grid.Column="1"></Label>
-        <Label x:Name="label_nameText" Grid.Row="1" Grid.Column="0" Text="Имя:"></Label>
-        <Label x:Name="label_name" Grid.Row="1" Grid.Column="1"></Label>
-        <Label x:Name="label_surnameText" Grid.Row="2" Grid.Column="0" Text="Фамилия:"></Label>
-        <Label x:Name="label_surname" Grid.Row="2" Grid.Column="1"></Label>
-        <Label x:Name="label_patronymicText" Grid.Row="3" Grid.Column="0" Text="Отчество:"></Label>
-        <Label x:Name="label_patronymic" Grid.Row="3" Grid.Column="1"></Label>
-        <Label x:Name="label_emailText" Grid.Row="4" Grid.Column="0" Text="Email:"></Label>
-        <Label x:Name="label_email" Grid.Row="4" Grid.Column="1"></Label>
-        <Label x:Name="label_phoneNumberText" Grid.Row="5" Grid.Column="0" Text="Phone:"></Label>
-        <Label x:Name="label_phoneNumber" Grid.Row="5" Grid.Column="1"></Label>
-        <Label x:Name="label_organizationText" Grid.Row="6" Grid.Column="0" Text="Organization:"></Label>
-        <Label x:Name="label_organization" Grid.Row="6" Grid.Column="1"></Label>
-        <Label x:Name="label_cityText" Grid.Row="7" Grid.Column="0" Text="City:"></Label>
-        <Label x:Name="label_city" Grid.Row="7" Grid.Column="1"></Label>
-        <Button x:Name="button_changeInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию" Clicked="Button_changeInformation_OnClicked"></Button>
-        <Button x:Name="button_downloadTeams" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" Clicked="Button_downloadTeams_OnClicked"></Button>
+        <Label x:Name="label_loginText" Text="Логин:" FontSize="Medium"></Label>
+        <Label x:Name="label_login" Grid.Row="0" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_nameText" Grid.Row="1" Grid.Column="0" Text="Имя:" FontSize="Medium"></Label>
+        <Label x:Name="label_name" Grid.Row="1" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_surnameText" Grid.Row="2" Grid.Column="0" Text="Фамилия:" FontSize="Medium"></Label>
+        <Label x:Name="label_surname" Grid.Row="2" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_patronymicText" Grid.Row="3" Grid.Column="0" Text="Отчество:" FontSize="Medium"></Label>
+        <Label x:Name="label_patronymic" Grid.Row="3" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_emailText" Grid.Row="4" Grid.Column="0" Text="Email:" FontSize="Medium"></Label>
+        <Label x:Name="label_email" Grid.Row="4" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_phoneNumberText" Grid.Row="5" Grid.Column="0" Text="Phone:" FontSize="Medium"></Label>
+        <Label x:Name="label_phoneNumber" Grid.Row="5" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_organizationText" Grid.Row="6" Grid.Column="0" Text="Organization:" FontSize="Medium"></Label>
+        <Label x:Name="label_organization" Grid.Row="6" Grid.Column="1" FontSize="Medium"></Label>
+        <Label x:Name="label_cityText" Grid.Row="7" Grid.Column="0" Text="City:" FontSize="Medium"></Label>
+        <Label x:Name="label_city" Grid.Row="7" Grid.Column="1" FontSize="Medium"></Label>
+        <Button x:Name="button_changeInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Margin="0, 40, 0, 0" Clicked="Button_changeInformation_OnClicked"></Button>
+        <Button x:Name="button_downloadTeams" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Clicked="Button_downloadTeams_OnClicked"></Button>
     </Grid>
 </ContentPage>

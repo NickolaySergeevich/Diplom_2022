@@ -2,39 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:RegistrationUserPage"
              x:Class="MobileApp.Pages.RegistrationUserPage">
-    <Grid x:Name="grid_main" HorizontalOptions="Center" VerticalOptions="Center">
+    <Grid BackgroundColor="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
-        <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" MaxLength="256"></Entry>
-        <Entry x:Name="entry_password" IsPassword="True" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Пароль"></Entry>
-        <Entry x:Name="entry_name" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Имя" MaxLength="256"></Entry>
-        <Entry x:Name="entry_surname" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Фамилия" MaxLength="256"></Entry>
-        <Entry x:Name="entry_patronymic" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Отчество" MaxLength="256"></Entry>
-        <Entry x:Name="entry_country" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Страна" MaxLength="256"></Entry>
-        <Entry x:Name="entry_city" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Город" MaxLength="256"></Entry>
-        <Entry x:Name="entry_educationalInstitution" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Место обучения" MaxLength="256"></Entry>
-        <Entry x:Name="entry_classNumber" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Номер класса" MaxLength="2" Keyboard="Numeric"></Entry>
-        <Entry x:Name="entry_email" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Электронная почта" MaxLength="256" Keyboard="Email"></Entry>
-        <Entry x:Name="entry_phoneNumber" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Placeholder="Номер телефона" MaxLength="11" Keyboard="Telephone"></Entry>
+        <Image Grid.Row="0" Source="logo.png" Margin="10"></Image>
 
-        <Button x:Name="button_registration" Grid.Row="11" Grid.Column="0" Text="Зарегистрироваться" Clicked="Button_registration_OnClicked"></Button>
-        <Button x:Name="button_exit" Grid.Row="11" Grid.Column="1" Text="Вернуться" Clicked="Button_exit_OnClicked"></Button>
+        <StackLayout Grid.Row="1" x:Name="stackLayout_main" BackgroundColor="White" Padding="30">
+            <Label Text="Добро пожаловать!" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Center"></Label>
+            <Entry x:Name="entry_login" Keyboard="Text" FontSize="Small" Placeholder="Login"></Entry>
+            <Entry x:Name="entry_password" IsPassword="True" Keyboard="Text" FontSize="Small" Placeholder="Пароль"></Entry>
+            <Entry x:Name="entry_name" Keyboard="Text" FontSize="Small" Placeholder="Имя"></Entry>
+            <Entry x:Name="entry_surname" Keyboard="Text" FontSize="Small" Placeholder="Фамилия"></Entry>
+            <Entry x:Name="entry_patronymic" Keyboard="Text" FontSize="Small" Placeholder="Отчество"></Entry>
+            <Entry x:Name="entry_country" Keyboard="Text" FontSize="Small" Placeholder="Страна"></Entry>
+            <Entry x:Name="entry_city" Keyboard="Text" FontSize="Small" Placeholder="Город"></Entry>
+            <Entry x:Name="entry_educationalInstitution" Keyboard="Text" FontSize="Small" Placeholder="Место обучения"></Entry>
+            <Entry x:Name="entry_classNumber" Keyboard="Numeric" FontSize="Small" Placeholder="Номер класса" MaxLength="2"></Entry>
+            <Entry x:Name="entry_email" Keyboard="Email" FontSize="Small" Placeholder="Email"></Entry>
+            <Entry x:Name="entry_phoneNumber" Keyboard="Numeric" FontSize="Small" Placeholder="Номер телефона" MaxLength="11"></Entry>
+            <Button x:Name="button_registration" Text="Регистрация" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Clicked="Button_registration_OnClicked"></Button>
+            <Button x:Name="button_exit" Text="Назад" BackgroundColor="White" Clicked="Button_exit_OnClicked"></Button>
+        </StackLayout>
     </Grid>
 </ContentPage>

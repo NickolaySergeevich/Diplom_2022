@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:ViewTasksWithoutSignUpPage"
              x:Class="MobileApp.Pages.ViewTasksWithoutSignUpPage">
-    <Grid HorizontalOptions="Fill" VerticalOptions="Start" Margin="5">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -10,12 +10,12 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label x:Name="label_name" FontSize="Medium"></Label>
+        <Label x:Name="label_name" FontSize="Medium" FontAttributes="Bold"></Label>
         <Label x:Name="label_organization" Grid.Row="1" FontSize="Small"></Label>
-        <Label x:Name="label_descriptionText" Grid.Row="2" Text="Описание:" FontSize="Medium"></Label>
+        <Label x:Name="label_descriptionText" Grid.Row="2" Text="Описание:" FontSize="Medium" FontAttributes="Bold" Margin="0, 20, 0, 0"></Label>
         <Label x:Name="label_description" Grid.Row="3" FontSize="Medium"></Label>
 
         <Grid Grid.Row="4" HorizontalOptions="Start" VerticalOptions="Start">
@@ -50,6 +50,6 @@
             <Label x:Name="label_isTest" Grid.Column="5"></Label>
         </Grid>
 
-        <Button x:Name="button_back" Grid.Row="6" Text="Назад" Clicked="Button_back_OnClicked"></Button>
+        <Button x:Name="button_back" Grid.Row="6" Text="Назад" BackgroundColor="Gray" TextColor="White" CornerRadius="50" VerticalOptions="End" Margin="20" Clicked="Button_back_OnClicked"></Button>
     </Grid>
 </ContentPage>

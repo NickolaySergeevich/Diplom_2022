@@ -4,7 +4,7 @@
              xmlns:viewCells="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
              x:DataType="pages:MainUserPage"
              x:Class="MobileApp.Pages.SignUpToTaskPage">
-    <Grid Margin="5">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -14,18 +14,18 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label x:Name="label_taskName" FontSize="Medium" Text="Название конкурса"></Label>
+        <Label x:Name="label_taskName" FontSize="Medium" Text="Название конкурса" FontAttributes="Bold"></Label>
         <Label x:Name="label_taskOrganization" Grid.Row="1" FontSize="Small" Text="Название организации"></Label>
-        <Entry x:Name="entry_commandName" Grid.Row="2" Placeholder="Название команды"></Entry>
+        <Entry x:Name="entry_commandName" Grid.Row="2" Placeholder="Название команды" Margin="0, 20, 0, 0"></Entry>
         <Entry x:Name="entry_nastUsername" Grid.Row="3" Placeholder="Логин наставника"></Entry>
 
-        <Grid Grid.Row="4" Margin="5">
+        <Grid Grid.Row="4" Margin="0, 20, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Label Text="Список команды:" FontSize="Small"></Label>
+            <Label Text="Список команды" FontSize="Medium" FontAttributes="Bold" HorizontalOptions="Center"></Label>
             <ListView x:Name="listView_teamMember" Grid.Row="1" HasUnevenRows="True" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -41,8 +41,8 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="button_signUp" Text="Записаться" Clicked="Button_signUp_OnClicked"></Button>
-            <Button x:Name="button_exit" Grid.Column="1" Text="Выход" Clicked="Button_exit_OnClicked"></Button>
+            <Button x:Name="button_signUp" Text="Записаться" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Clicked="Button_signUp_OnClicked"></Button>
+            <Button x:Name="button_exit" Grid.Column="1" Text="Выход" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Clicked="Button_exit_OnClicked"></Button>
         </Grid>
     </Grid>
 </ContentPage>

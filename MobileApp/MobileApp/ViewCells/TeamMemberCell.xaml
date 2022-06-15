@@ -15,8 +15,8 @@
             </Grid.ColumnDefinitions>
 
             <Entry x:Name="entry_username" Grid.ColumnSpan="2" Placeholder="Логин пользователя" Text="{Binding Username}"></Entry>
-            <CheckBox x:Name="checkBox_isTeamLead" Grid.Row="1" Grid.Column="0" IsChecked="{Binding IsTeamLead}"></CheckBox>
-            <Label x:Name="label_isTeamLead" Grid.Row="1" Grid.Column="1" Text="Тимлидер"></Label>
+            <CheckBox x:Name="checkBox_isTeamLead" Grid.Row="1" Grid.Column="0" IsChecked="{Binding IsTeamLead}" Color="Gray"></CheckBox>
+            <Label x:Name="label_isTeamLead" Grid.Row="1" Grid.Column="1" Text="Тимлидер" VerticalOptions="Center"></Label>
         </Grid>
     </ViewCell.View>
 </ViewCell>

@@ -2,24 +2,46 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:LoginPage"
              xmlns:viewCell="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
-             x:Class="MobileApp.Pages.LoginPage">
+             x:Class="MobileApp.Pages.LoginPage"
+             BarBackgroundColor="Gray">
     <ContentPage Title="Вход">
-        <Grid HorizontalOptions="Center" VerticalOptions="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+        <Grid HorizontalOptions="Start" VerticalOptions="Fill" BackgroundColor="LightGray">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
 
-            <Entry x:Name="entry_login" Grid.ColumnSpan="2" Placeholder="Логин" MaxLength="256" />
-            <Entry x:Name="entry_password" IsPassword="True" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Placeholder="Пароль" />
+            <Grid Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
 
-            <Button x:Name="button_login" Grid.Row="2" Grid.Column="0" Text="Войти" Clicked="Button_login_Clicked" />
-            <Button x:Name="button_registration" Grid.Row="2" Grid.Column="1" Text="Зарегистрироваться" Clicked="Button_registration_Clicked" />
+                <Image Grid.Row="0" Source="logo.png" HorizontalOptions="Center" Margin="10"></Image>
+                <Label Grid.Row="1" Text="Добрый день!" HorizontalOptions="Center" FontSize="Title" FontAttributes="Bold" Margin="0, 10, 0, 0"></Label>
+                <Label Grid.Row="2" Text="Пожалуйста, авторизуйтесь" HorizontalOptions="Center" FontSize="Large"></Label>
+            </Grid>
+
+            <Grid Grid.Row="1" BackgroundColor="White" Padding="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Text="Логин" TextColor="LightGray"></Label>
+                <Entry Grid.Row="1" x:Name="entry_login" Keyboard="Text"></Entry>
+                <Label Grid.Row="2" Text="Пароль" TextColor="LightGray"></Label>
+                <Entry Grid.Row="3" x:Name="entry_password" IsPassword="True"></Entry>
+                <Button Grid.Row="4" x:Name="button_login" Text="Войти" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Clicked="Button_login_Clicked"></Button>
+                <Label Grid.Row="5" Text="Забыли пароль?" HorizontalOptions="End" FontSize="Medium"></Label>
+                <Button Grid.Row="6" x:Name="button_registration" Text="Регистрация" VerticalOptions="Center" Padding="10" BackgroundColor="White" Clicked="Button_registration_Clicked"></Button>
+            </Grid>
         </Grid>
     </ContentPage>
     <ContentPage Title="Кейсы">
@@ -29,14 +51,14 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ListView x:Name="listView_tasks" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasks_OnItemTapped">
+            <ListView Grid.Row="0" x:Name="listView_tasks" HasUnevenRows="True" SelectionMode="None" Margin="10, 10, 10 ,0" ItemTapped="ListView_tasks_OnItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <viewCell:TaskCell></viewCell:TaskCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="button_reloadTaskList" Grid.Row="1" Text="Обновить список задач" Clicked="Button_reloadTaskList_OnClicked"></Button>
+            <Button Grid.Row="1" x:Name="button_reloadTaskList" Text="Обновить список задач" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Margin="20" Clicked="Button_reloadTaskList_OnClicked"></Button>
         </Grid>
     </ContentPage>
 </TabbedPage>

@@ -2,7 +2,8 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:pages="clr-namespace:MobileApp.Pages" x:DataType="pages:MainUserPage"
              xmlns:viewCell="clr-namespace:MobileApp.ViewCells;assembly=MobileApp"
-            x:Class="MobileApp.Pages.MainUserPage">
+            x:Class="MobileApp.Pages.MainUserPage"
+             BarBackgroundColor="Gray">
     <ContentPage Title="Кейсы" >
         <Grid>
             <Grid.RowDefinitions>
@@ -10,21 +11,21 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ListView x:Name="listView_tasks" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasks_OnItemTapped">
+            <ListView Grid.Row="0" x:Name="listView_tasks" HasUnevenRows="True" SelectionMode="None" Margin="10, 10, 10, 0" ItemTapped="ListView_tasks_OnItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <viewCell:TaskCell></viewCell:TaskCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="button_reloadListTasks" Grid.Row="1" Text="Обновить список задач" Clicked="Button_reloadListTasks_OnClicked"></Button>
+            <Button Grid.Row="1" x:Name="button_reloadListTasks" Text="Обновить список задач" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Margin="20" Clicked="Button_reloadListTasks_OnClicked"></Button>
         </Grid>
     </ContentPage>
     <ContentPage Title="Чат" >
-        <Label Text="В разработке"></Label>
+        <Label Text="В разработке" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold"></Label>
     </ContentPage>
     <ContentPage Title="Аккаунт" >
-        <Grid Margin="5">
+        <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -55,7 +56,7 @@
             <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -69,7 +70,7 @@
             <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -82,9 +83,9 @@
 
             <Label x:Name="label_emailText" Grid.Row="6" Grid.Column="0" Text="Email:"></Label>
             <Label x:Name="label_email" Grid.Row="6" Grid.Column="1"></Label>
-            <Label x:Name="label_phoneNumberText" Grid.Row="7" Grid.Column="0" Text="Номер телефона:"></Label>
+            <Label x:Name="label_phoneNumberText" Grid.Row="7" Grid.Column="0" Text="Телефон:"></Label>
             <Label x:Name="label_phoneNumber" Grid.Row="7" Grid.Column="1"></Label>
-            <Button x:Name="button_changeUserInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Изменить данные" Clicked="Button_changeUserInformation_OnClicked"></Button>
+            <Button x:Name="button_changeUserInformation" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Text="Изменить данные" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Scale="0.9" Clicked="Button_changeUserInformation_OnClicked"></Button>
 
             <Grid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
@@ -92,7 +93,7 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Label Text="Список задач:"></Label>
+                <Label Grid.Row="0" Text="Список задач:" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold" Margin="0, 20, 0, 0"></Label>
 
                 <ListView x:Name="listView_tasksByUser" Grid.Row="1" HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_tasksByUser_OnItemTapped">
                     <ListView.ItemTemplate>
@@ -103,7 +104,7 @@
                 </ListView>
             </Grid>
 
-            <Button x:Name="button_reloadListTasksByUser" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Обновить список задач" Clicked="Button_reloadListTasksByUser_OnClicked"></Button>
+            <Button x:Name="button_reloadListTasksByUser" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Обновить список задач" BackgroundColor="Gray" TextColor="White" CornerRadius="50" Scale="0.9" Clicked="Button_reloadListTasksByUser_OnClicked"></Button>
         </Grid>
     </ContentPage>
 </TabbedPage>

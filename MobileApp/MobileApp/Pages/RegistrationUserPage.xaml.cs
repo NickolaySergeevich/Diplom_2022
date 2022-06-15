@@ -25,7 +25,7 @@ namespace MobileApp.Pages
 
         private async void Button_registration_OnClicked(object sender, EventArgs e)
         {
-            var fieldsOk = grid_main.Children.Where(child => child.GetType() == typeof(Entry)).All(child => !string.IsNullOrEmpty(((Entry)child).Text));
+            var fieldsOk = stackLayout_main.Children.Where(child => child.GetType() == typeof(Entry)).All(child => !string.IsNullOrEmpty(((Entry)child).Text));
             if (!fieldsOk)
             {
                 await DisplayAlert("Внимание", "Не заполнены поля для регистрации", "OK");

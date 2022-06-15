@@ -10,7 +10,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Label Text="{Binding Name}" FontSize="Medium"></Label>
+            <Label Text="{Binding Name}" FontSize="Medium" TextColor="Black"></Label>
             <Label Grid.Row="1" Text="{Binding Organization}" FontSize="Small"></Label>
         </Grid>
     </ViewCell.View>
