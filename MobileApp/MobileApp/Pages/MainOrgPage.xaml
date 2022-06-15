@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -29,5 +30,6 @@
         <Label x:Name="label_email" Grid.Row="4" Grid.Column="1"></Label>
         <Button x:Name="button_changeInformation" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Поменять информацию" Clicked="Button_changeInformation_OnClicked"></Button>
         <Button x:Name="button_downloadTeams" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить команды" Clicked="Button_downloadTeams_OnClicked"></Button>
+        <Button x:Name="button_loadWorks" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="Выгрузить результаты" Clicked="Button_loadWorks_OnClicked"></Button>
     </Grid>
 </ContentPage>

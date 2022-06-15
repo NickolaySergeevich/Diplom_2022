@@ -90,5 +90,10 @@ namespace MobileApp.Pages
 
             button_downloadTeams.IsEnabled = true;
         }
+
+        private void Button_loadWorks_OnClicked(object sender, EventArgs e)
+        {
+            button_loadWorks.Text = "В разработке";
+        }
     }
 }
