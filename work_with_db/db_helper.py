@@ -271,6 +271,41 @@ class DBHelper:
             }
 
     @staticmethod
+    def get_part_information(user_id: int, username: str, password: str) -> Optional[dict]:
+        """
+        Получение информации о партнёре
+
+        :param user_id: ID пользователя
+        :param username: Логин пользователя
+        :param password: Пароль пользователя (MD5)
+
+        :return: Кортеж с информацией или None
+        """
+
+        if DBHelper.get_instance().login_in(username, password) is None:
+            return None
+
+        query = f"select name, surname, patronymic, email, phone_number, organization, city " \
+                f"from partners_info where user_id = {user_id}"
+        DBHelper.get_instance().__cursor.execute(query)
+
+        data = DBHelper.get_instance().__cursor.fetchall()
+        if len(data) == 0:
+            return None
+        else:
+            return {
+                "user_id": user_id,
+                "username": username,
+                "name": data[0][0],
+                "surname": data[0][1],
+                "patronymic": data[0][2],
+                "email": data[0][3],
+                "phone_number": data[0][4],
+                "organization": data[0][5],
+                "city": data[0][6]
+            }
+
+    @staticmethod
     def registration_expert(username: str, password: str, name: str, surname: str, patronymic: str, email: str,
                             phone_number: str, organization: str, city: str) -> bool:
         """
@@ -514,6 +549,50 @@ class DBHelper:
         return True
 
     @staticmethod
+    def update_part(user_id: int, username: str, password: str, name: str, surname: str, patronymic: str,
+                    email: str, phone_number: str, organization: str, city: str) -> bool:
+        """
+        Обновление данных партнёра
+
+        :param user_id: ID пользователя
+        :param username: Логин пользователя
+        :param password: Пароль пользователя
+        :param name: Имя пользователя
+        :param surname: Фамилия пользователя
+        :param patronymic: Отчество пользователя
+        :param email: Почта пользователя
+        :param phone_number: Номер телефона пользователя
+        :param organization: Организация пользователя
+        :param city: Город пользователя
+
+        :return: Успешно ли
+        """
+
+        try:
+            query = f"select id from users where id = {user_id} and password = '{password}'"
+            DBHelper.get_instance().__cursor.execute(query)
+
+            if len(DBHelper.get_instance().__cursor.fetchall()) == 0:
+                return False
+        except mysql.connector.errors.IntegrityError:
+            return False
+
+        try:
+            query = f"update users set username = '{username}' where id = {user_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+
+            query = f"update partners_info set name = '{name}', surname = '{surname}', " \
+                    f"patronymic = '{patronymic}',  email = '{email}', phone_number = '{phone_number}', " \
+                    f"organization = '{organization}', city = '{city}' where user_id = {user_id}"
+            DBHelper.get_instance().__cursor.execute(query)
+        except mysql.connector.errors.IntegrityError:
+            DBHelper.get_instance().__connection.rollback()
+            return False
+
+        DBHelper.get_instance().__connection.commit()
+        return True
+
+    @staticmethod
     def registration_nast(username: str, password: str, name: str, surname: str, patronymic: str, country: str,
                           city: str, educational_institution: str, email: str, phone_number: str) -> bool:
         """
@@ -744,6 +823,10 @@ def main() -> None:
     # print(DBHelper.get_instance().remove_from_task(5, "Test"))
     # print(DBHelper.get_instance().get_users_with_teams())
     # print(DBHelper.get_instance().get_users_with_teams_by_org("Банк ВТБ"))
+    # print(DBHelper.get_instance().get_part_information(17, "asakuraPart", "78e5233d20f3608ebc410ee2c18a41da"))
+    # print(DBHelper.get_instance().update_part(17, "asakuraPart", "78e5233d20f3608ebc410ee2c18a41da", "Николай",
+    #                                           "Алексеев", "Сергеевич", "asakura475@gmail.com", "89260282552",
+    #                                           "Банк ВТБ", "Москва"))
 
 
 if __name__ == '__main__':
