@@ -6,6 +6,7 @@
         public const string LoginAddress = "http://diplom.std-918.ist.mospolytech.ru/api/login/";
         public const string UserInformationAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_user_information/";
         public const string OrgInformationAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_org_information/";
+        public const string PartInformationAddress = "http://diplom.std-918.ist.mospolytech.ru/api/get_part_information/";
         public const string RegistrationExpertAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_expert/";
         public const string RegistrationOrgAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_org/";
         public const string RegistrationPartnerAddress = "http://diplom.std-918.ist.mospolytech.ru/api/registration_partners/";

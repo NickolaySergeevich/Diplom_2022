@@ -101,6 +101,23 @@ namespace MobileApp.Pages
 
                             break;
                         case Constants.PartnerUser:
+                            var responseFive = await _restService.GetResponseAsync<PartInformationResponse>(
+                                Constants.PartInformationAddress + "?user_id=" + response.Id + "&username=" + login +
+                                "&password=" + password);
+
+                            switch (responseFive.Status)
+                            {
+                                case Constants.ServerError:
+                                    await DisplayAlert("Ooops", "С сервером что-то не так. Обратитесь к системному администратору.", "OK");
+                                    break;
+                                case Constants.NoDataInDb:
+                                    await DisplayAlert("Вы не зарегистрированы!", "Не можем найти ваши данные на сервере. Пройдите регистрацию у администратора.", "OK");
+                                    break;
+                                default:
+                                    Application.Current.MainPage = new MainPartPage(responseFive, password);
+                                    break;
+                            }
+
                             break;
                         case Constants.ExpertUser:
                             break;
