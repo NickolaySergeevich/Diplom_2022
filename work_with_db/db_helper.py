@@ -731,11 +731,11 @@ class DBHelper:
         return return_dict
 
     @staticmethod
-    def get_users_with_teams_by_org(organization_name: str) -> dict:
+    def get_users_with_teams_by_org(partners_id: int) -> dict:
         """
         Находит список команд для организатора и удобно пакует
 
-        :param organization_name: Название организации
+        :param partners_id: ID партнёра
 
         :return: Словарик с пользователями
         """
@@ -744,7 +744,8 @@ class DBHelper:
                 f"users_to_task.is_team_lead, users_to_task.name, tasks.name from users_info " \
                 f"left join users_to_task on users_info.user_id = users_to_task.user_id " \
                 f"left join tasks on tasks.id = users_to_task.task_id " \
-                f"where users_to_task.name is not null and tasks.organization = '{organization_name}'"
+                f"left join partners_info on partners_info.user_id = {partners_id} " \
+                f"where users_to_task.name is not null and tasks.organization = partners_info.organization"
         DBHelper.get_instance().__cursor.execute(query)
 
         return_dict = dict()
@@ -822,7 +823,7 @@ def main() -> None:
     # print(DBHelper.get_instance().sign_up_to_task((14, 19, 20, 30), 5, 31, "Test", 14))
     # print(DBHelper.get_instance().remove_from_task(5, "Test"))
     # print(DBHelper.get_instance().get_users_with_teams())
-    # print(DBHelper.get_instance().get_users_with_teams_by_org("Банк ВТБ"))
+    # print(DBHelper.get_instance().get_users_with_teams_by_org(17))
     # print(DBHelper.get_instance().get_part_information(17, "asakuraPart", "78e5233d20f3608ebc410ee2c18a41da"))
     # print(DBHelper.get_instance().update_part(17, "asakuraPart", "78e5233d20f3608ebc410ee2c18a41da", "Николай",
     #                                           "Алексеев", "Сергеевич", "asakura475@gmail.com", "89260282552",
