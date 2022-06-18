@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 using MobileApp.ApiJsonResponse;
@@ -46,7 +47,7 @@ namespace MobileApp.Pages
             button_downloadTeams.IsEnabled = false;
 
             var response = await _restService.GetResponseAsync<GetTeamsResponse>(Constants.GetTeamsByPartAddress +
-                "?username=" + _partInformation.Username + "&password=" + _password + "&organization_name=" + _partInformation.Organization);
+                "?username=" + _partInformation.Username + "&password=" + _password + "&partners_id=" + _partInformation.UserId);
             switch (response.Status)
             {
                 case Constants.ServerError:
@@ -84,7 +85,7 @@ namespace MobileApp.Pages
                     var absolutePath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDocuments)?.AbsolutePath;
                     if (absolutePath != null)
                     {
-                        File.WriteAllText(Path.Combine(absolutePath, $"teams_{_partInformation.Organization}.txt"), answer);
+                        File.WriteAllText(Path.Combine(absolutePath, $"teams_'{_partInformation.Username}'.txt"), answer);
                         await DisplayAlert("Успех!", "Файл с командами сохранен в документы!", "ok");
                     }
 
