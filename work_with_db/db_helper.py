@@ -733,7 +733,7 @@ class DBHelper:
     @staticmethod
     def get_users_with_teams_by_org(partners_id: int) -> dict:
         """
-        Находит список команд для организатора и удобно пакует
+        Находит список команд для партнёра и удобно пакует
 
         :param partners_id: ID партнёра
 
